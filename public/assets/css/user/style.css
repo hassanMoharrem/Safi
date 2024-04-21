@@ -1,0 +1,210 @@
+@font-face {
+    src: url("../../fonts/Poppins-Regular.ttf");
+    font-family: "main";
+}
+@font-face {
+    src: url("../../fonts/Poppins-Bold.ttf");
+    font-family: "main-bold";
+}
+
+:root {
+    --bg-main: #1C1F2E;
+    --bg-sub: #1F2336;
+    --shadow-main: 0px 4px 8px rgba(11, 8, 8, 0.17);
+    --shadow-sidebar: 0px 8px 16px rgba(11, 8, 8, 0.17);
+    --shadow-card: 0px 4px 4px #1D2032;
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-family: "main", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "main", sans-serif;
+    background-color: var(--bg-main);
+    color: #FFFFFF;
+}
+a{
+    text-decoration: none;
+}
+body .bg-main {
+    background-color: var(--bg-main);
+}
+body .bg-sub {
+    background-color: var(--bg-sub);
+}
+body main .width-94 {
+    width: 300px;
+    background-color: var(--bg-main);
+    height: 100vh;
+    box-shadow: 10px 0 3px var(--bg-sub);
+    margin-right: 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+}
+body main .width-calc {
+    background-color: var(--bg-main);
+    width: 100%;
+    /*max-width: 1265px;*/
+    height: 100vh;
+    margin: 0 auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.h-sub-code{
+    height: calc(100vh - 100px);
+    margin: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+body .shadow-card {
+    box-shadow: var(--shadow-card);
+}
+.description{
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.border-main{
+    border-color: #25283A !important;
+}
+
+.active-green {
+    background-color: black !important;
+}
+
+.code{
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover{
+    border-color: transparent !important;
+}
+.nav .nav-item .nav-link.active{
+    background-color: var(--bg-main) !important;
+    border-color: transparent !important;
+}
+.w-5{
+    width: 5%;
+}
+.w-33{
+    width: 31%;
+}
+.font-18{
+    font-size: 20px;
+}
+.font-15{
+    font-size: 17px;
+}
+.font-12{
+    font-size: 13px;
+}
+.font-bold{
+    font-family: 'main-bold',sans-serif;
+}
+.mb-p-0 p{
+    margin-bottom: 0 !important;
+}
+.text-muted-edit{
+    color: #b7b6b6 !important;
+}
+.top-left-50-edit{
+    top: 48%;
+    left: 48%;
+}
+.content{
+    opacity: 0;
+    visibility: hidden;
+}
+.content-show{
+    transition: ease-in-out 0.8s;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+.shadow-login {
+    box-shadow: 2px 3px 6px 5px rgba(0, 0, 0, 0.17);
+}
+.contain {
+    object-fit: contain;
+}
+.mn-t-5 {
+    margin-top: -50px;
+}
+.rounded-30 {
+    border-radius: 30px;
+}
+.border-transparent {
+    border: 1px solid transparent !important;
+}
+.form-control:focus {
+    color: #F0F0F0;
+    background-color: var(--bg-sub);
+    box-shadow: 1px 1px var(--bg-main) !important;
+    outline: none !important;
+}
+.bg-button {
+    background-image: linear-gradient(to left, #5A29D6, #3859EE);
+}
+.api .checkmark {
+    position: absolute;
+    top: 1px;
+    left: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: var(--bg-sub);
+}
+.api .checkbox-wrap input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.api .checkbox-wrap {
+    display: inline-block;
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.api .checkbox-info {
+    color: #FFFFFF;
+}
+.py-3px{
+    padding: 2px 7px ;
+}
+.bg-image-border{
+    background-image: url("../../images/vector.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 70px;
+    width: 70px;
+}
+pre[class*="language-"]{
+    border: 0 !important;
+    box-shadow: 0 0 0 !important;
+}
+pre[class*="language-"], :not(pre) > code[class*="language-"]{
+    background: none !important;
+}
+.input-file {
+    z-index: -1;
+    position: absolute;
+    opacity: 0;
+}
