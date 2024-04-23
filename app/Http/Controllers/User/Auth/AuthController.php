@@ -26,7 +26,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'email' => 'required|email|exists:users,email|max:300',
+            'phone' => 'required|exists:users,phone',
             'password' => 'required|max:300',
         ]);
         if($validator->fails()){
@@ -35,8 +35,8 @@ class AuthController extends Controller
                 "errors" => $validator->errors(),
             ]);
         }
-        if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = User::where('email',$request->email)->first();
+        if (Auth::guard('web')->attempt(['phone' => $request->phone, 'password' => $request->password])) {
+            $user = User::where('phone',$request->phone)->first();
             auth()->login($user);
             $user['token'] =  $user->createToken('MyApp')->plainTextToken;
             return response()->json([
