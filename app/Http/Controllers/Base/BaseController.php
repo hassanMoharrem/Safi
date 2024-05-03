@@ -46,12 +46,17 @@ class BaseController extends Controller
         }
 
         $data = $model::create($params);
-        $data_count = $model::query()->count();
+        if (isset($params['user_id'])){
+            $data_count = $model::query()->where('user_id',$params['user_id'])->count();
+        }else{
+            $data_count = $model::query()->count();
+        }
         return response()->json([
             'status' => 200,
             'message' => 'Data Created',
             'success' => true,
             'data' => $data,
+            'data_count' => $data_count,
         ]);
     }
     public function showBase($id , $model)
@@ -100,7 +105,6 @@ class BaseController extends Controller
             'message' => 'User updated',
             'success' => true,
             'data' => $find,
-            'id' => $id,
         ]);
 
     }

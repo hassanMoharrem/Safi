@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 //Route::get('/user', function (Request $request) {
 //    return $request->user();
 //})->middleware('auth:sanctum');
+Route::get('locale/{lang}',[\App\Http\Controllers\LanguageController::class,'switch']);
 Route::prefix('admin')->name('api.admin.')->group(function () {
     Route::prefix('users')->name('users.')->group(function () {
         Route::post('/data/users', [\App\Http\Controllers\Admin\UserController::class, 'getAllData'])->name('DataUsers');
@@ -26,6 +27,7 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::post('/create','store');
         Route::post('/update/{id}','update');
         Route::get('/show/{id}','show');
+        Route::get('/search','getSearchStation');
         Route::delete('/delete/{id}','destroy');
     });
     Route::prefix('updatePhase')->controller(\App\Http\Controllers\User\UpdatePhaseController::class)->group(function(){
@@ -35,7 +37,17 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::get('/show/{id}','show');
         Route::delete('/delete/{id}','destroy');
     });
-
-
+    Route::prefix('profile')->controller(\App\Http\Controllers\User\ProfileController::class)->group(function (){
+        Route::get('/show','show');
+        Route::post('/update','update');
+    });
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/myNotification', [\App\Http\Controllers\User\NotificationController::class, 'index'])->name('DataNotifications');
+        Route::get('/myUnreadNotifications', [\App\Http\Controllers\User\NotificationController::class, 'showUnread'])->name('DataUnreadNotifications');
+        Route::get('/myReadNotifications', [\App\Http\Controllers\User\NotificationController::class, 'showRead'])->name('DataReadNotifications');
+        Route::delete('delete/{id}', [\App\Http\Controllers\User\NotificationController::class, 'destroy'])->name('DeleteNotification');
+    });
+    Route::post('/verify', [\App\Http\Controllers\User\Auth\AuthController::class, 'verifyCode'])->withoutMiddleware([\App\Http\Middleware\VerifyUser::class]);
+    Route::get('/logout', [\App\Http\Controllers\User\Auth\AuthController::class, 'logout'])->name('logout');
 
 });

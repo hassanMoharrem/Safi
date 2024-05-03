@@ -7,27 +7,34 @@ use App\Models\User;
 
 class ProfileController extends BaseController
 {
-    public function index($view = 'default', $parameters = [])
+    public function show()
     {
-        $view = 'user.profile';
-        return parent::indexBase($view , $parameters); // Pass the $view variable to the parent method
-    }
-    public function show($id , $model = 'default')
-    {
+        $station = User::query()->where('id',auth()->id())->first();
+        if (!$station) {
+            return response()->json([
+                'status' => 403,
+                'message' => 'You are not authorized',
+                'success' => false
+            ], 403);
+        }
         $model = User::class;
-        return parent::showBase($id,$model); // Pass the $id & $model  variable to the parent method
+        return parent::showBase(auth()->id(),$model); // Pass the $id & $model  variable to the parent method
 
     }
     public function update(){
         $model = User::class;
-        $id = auth()->guard('web')->id();
+        $id = auth()->id();
+        $user = User::query()->where('id',auth()->id())->first();
         $params = \request()->all();
+        $params['num_system'] = $user->num_system;
         $rules = [
             'name' => 'required|string|min:3|max:50|unique:users,name,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|min:6',
+            'phone' => 'required|numeric|digits:10|unique:users,phone,'. $id,
             'image' => 'nullable|image'
         ];
+
         return parent::updateBase($id,$model,$params,$rules); // Pass the $id , $model , $params & $rules  variable to the parent method
 
     }

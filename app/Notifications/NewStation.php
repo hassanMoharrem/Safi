@@ -18,7 +18,7 @@ class NewStation extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct($station , $phase)
+    public function __construct(?DessertStation $station , $phase)
     {
         $this->station = $station;
         $this->phase = $phase;
@@ -46,12 +46,23 @@ class NewStation extends Notification
     }
     public function toDatabase($notifiable)
     {
-        return [
-            'title' => 'New Follower',
-            'body' => sprintf('%s One day left in the stage', $this->station->name ),
-            'station_id' => $this->station->id,
-//            'action' => url(route('user.station.show',$this->station->id))
-        ];
+        if ($this->station) {
+            return [
+                'title' => 'Notification To Update Phase',
+                'body' => sprintf('%s One day left in the stage', $this->station->name),
+                'body_ar' => sprintf('بقية يوم واحد على المرحلة %s', $this->station->name_ar),
+                'station_id' => $this->station->id,
+                'time' => $this->phase->time,
+                // other properties...
+            ];
+        } else {
+            // Handle the case when $station is null
+            return [
+                'title' => 'New Follower',
+                'body' => sprintf('One day left in the stage. However, the station is not available.'),
+                // other properties...
+            ];
+        }
     }
 
     /**

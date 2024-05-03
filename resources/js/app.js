@@ -1,4 +1,5 @@
 import './bootstrap'
+import './lang.js'
 import { createApp } from 'vue/dist/vue.esm-bundler';
 import '@fortawesome/fontawesome-free/css/all.css';
 ///// Admin /////////////

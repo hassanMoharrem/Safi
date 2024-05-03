@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('password');
             $table->integer('num_system')->default(1);
             $table->string('phone')->nullable();
+            $table->string('lang')->default('en');
+            $table->string('verify_code')->nullable();
+            $table->boolean('is_verified')->default(false);
+            $table->integer('num_verify_code')->default(3);
             $table->longText('image')->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -1,263 +1,225 @@
 <template>
-    <div v-if="showSuccessMsg">
-        <alert-message :successMsg="this.successMsg"></alert-message>
-    </div>
-    <div class="row w-100 mx-auto justify-content-center">
-        <div class="col-md-12">
-            <div class="row mx-auto w-100 g-0">
-                <div class="col-md-12 my-2 my-md-auto text-end">
-<!--                    <modal :button-name="'Add User'" :functionAction="1"></modal>-->
-                    <button type="button"
-                            class="btn padding-button-cancel px-4 bg-button font-14 text-label rounded-8 border-0"
-                            data-bs-toggle="modal" data-bs-target="#modalCreateUser">
-                        <img :src="'../assets/images/plus.svg'" width="10" alt=""> Add User
-                    </button>
-                    <div class="modal fade" id="modalCreateUser" aria-hidden="true"
-                         aria-labelledby="exampleModalLabel" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content bg-main mx-md-5 rounded-top-20 rounded-bottom-20">
-                                <div class="modal-header bg-linear rounded-top-20 border-bottom-0">
-                                    <h5 class="modal-title" id="exampleModalLabel">Create a user</h5>
-                                    <button type="button" class="btn border-0 p-0 ms-auto" id="CloseCreateUser"
-                                            data-bs-dismiss="modal" aria-label="Close">
-                                        <img :src="'../assets/images/icons8-cancel-30.png'" width="16" alt="">
-                                    </button>
-                                </div>
-                                <div class="modal-body px-4 py-2 bg-main rounded-bottom-20 text-start">
-                                    <form @submit.prevent="AddUser" method="post" enctype="multipart/form-data"
-                                          class="mx-2">
-                                        <div class="form-group mb-0 text-center">
-                                            <div id="file-upload-filename"
-                                                 class="text-right text-truncate w-75 name-file-upload position-absolute"></div>
-                                            <label for="file-upload-communication-comments-create"
-                                                   class="btn text-muted text-center p-1 mb-0 mx-auto position-relative bg-image-border p-0 bg-sub shadow-sm">
-                                                <img id="selected-image" class="w-100 h-100 object-fit-cover" style="display:none;" src="" alt="">
-                                            </label>
-                                            <small class="text-muted d-block py-2 font-12 fw-light">Click to Add Your Profile Image</small>
-
-                                            <input type="file" v-on:change="selectedFile" class="input-file start-0 file-upload-communication-comments-create"
-                                                   id="file-upload-communication-comments-create"/>
-                                            <div class="file-upload-filename-communication-comments-create mx-auto w-100 text-truncate"></div>
-                                            <span v-if="flashMsg.image"
-                                                  class="text-danger font-12 fw-400">{{ flashMsg.image[0] }}</span>
-
-                                        </div>
-                                        <div class="form-group mb-3 text-start">
-                                            <label class="fw-400 text-label font-14">Name</label>
-                                            <input type="text" v-model="user.name"
-                                                   class="form-control shadow-input mt-2 border-transparent bg-sub font-14 text-muted">
-                                            <span v-if="flashMsg.name" class="text-danger font-12 fw-400">{{ flashMsg.name[0] }}</span>
-                                        </div>
-                                        <div class="form-group mb-3 text-start">
-                                            <label class="fw-400 text-label font-14">Number System</label>
-                                            <input type="text" v-model="user.num_system"
-                                                   class="form-control shadow-input mt-2 border-transparent bg-sub font-14 text-muted">
-                                            <span v-if="flashMsg.num_system" class="text-danger font-12 fw-400">{{ flashMsg.num_system[0] }}</span>
-                                        </div>
-                                        <div class="form-group mb-3 text-start">
-                                            <label class="fw-400 text-label font-14">Email</label>
-                                            <input type="email" v-model="user.email"
-                                                   class="form-control shadow-input mt-2 border-transparent bg-sub font-14 text-muted">
-                                            <span v-if="flashMsg.email"
-                                                  class="text-danger font-12 fw-400">{{ flashMsg.email[0] }}</span>
-                                        </div>
-                                        <div class="form-group mb-3 text-start">
-                                            <label class="fw-400 text-label font-14">Phone</label>
-                                            <input type="text" v-model="user.phone"
-                                                   class="form-control shadow-input mt-2 border-transparent bg-sub font-14 text-muted">
-                                            <span v-if="flashMsg.phone" class="text-danger font-12 fw-400">{{ flashMsg.phone[0] }}</span>
-                                        </div>
-                                        <div class="form-group mb-3 text-start">
-                                            <label class="fw-400 text-label font-14">Password</label>
-                                            <input type="password" v-model="user.password"
-                                                   class="form-control shadow-input mt-2 border-transparent bg-sub font-14 text-muted">
-                                            <span v-if="flashMsg.password"
-                                                  class="text-danger font-12 fw-400">{{ flashMsg.password[0] }}</span>
-                                        </div>
-                                        <div class="text-center my-2">
-                                            <button type="submit"
-                                                    class="btn px-4 bg-button font-14 text-label rounded-10 border-0">
-                                                <span>Create</span><i v-if="loading_create" class="fas fa-spinner ms-1 fa-spin text-white"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="modalEditUser" aria-hidden="true"
-                         aria-labelledby="exampleModalLabel" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content bg-main mx-md-5 rounded-top-20 rounded-bottom-20">
-                                <div class="modal-header bg-linear rounded-top-20 border-bottom-0">
-                                    <h5 class="modal-title" id="exampleModalLabelEditUser">Edit a user</h5>
-                                    <button type="button" class="btn border-0 p-0 ms-auto" id="CloseEditUser"
-                                            data-bs-dismiss="modal" aria-label="Close">
-                                        <img :src="'../assets/images/icons8-cancel-30.png'" width="16" alt="">
-                                    </button>
-                                </div>
-                                <div id="updateUser_easy" class="modal-body px-4 py-2 bg-main rounded-bottom-20 text-start">
-                                    <form @submit.prevent="UpdateUser" method="post" enctype="multipart/form-data"
-                                          class="mx-2">
-                                        <div class="form-group mb-0 text-center">
-                                            <div id="file-upload-filename"
-                                                 class="text-right text-truncate w-75 name-file-upload position-absolute"></div>
-                                            <label for="file-upload-communication-comments-update"
-                                                   class="btn text-muted text-center p-1 mb-0 mx-auto position-relative bg-image-border p-0 bg-sub shadow-sm">
-                                                <img id="selected-update-image" v-if="users_update.image == null" class="w-100 h-100 object-fit-cover" style="display:none;" src="" alt="">
-                                                <img id="selected-update-image" v-else class="w-100 h-100 object-fit-cover" :src="'../storage/'+users_update.image" alt="">
-                                            </label>
-                                            <small class="text-muted d-block py-2 font-12 fw-light">Click to Add Your Profile Image</small>
-
-                                            <input type="file" v-on:change="selectedFileEdit" class="input-file start-0 file-upload-communication-comments-create"
-                                                   id="file-upload-communication-comments-update"/>
-                                            <div class="file-upload-filename-communication-comments-create mx-auto w-100 text-truncate"></div>
-                                            <span v-if="flashMsg.image"
-                                                  class="text-danger font-12 fw-400">{{ flashMsg.image[0] }}</span>
-
-                                        </div>
-                                        <div class="form-group mb-3 text-start">
-                                            <label class="fw-400 form-label font-14">Name</label>
-                                            <input type="text" v-model="users_update.name"
-                                                   class="form-control shadow-input mt-2 border-transparent bg-sub font-14 text-muted">
-                                            <span v-if="flashMsg.name" class="text-danger font-12 fw-400">{{ flashMsg.name[0] }}</span>
-                                        </div>
-                                        <div class="form-group mb-3 text-start">
-                                            <label class="fw-400 form-label font-14">Number System</label>
-                                            <input type="text" v-model="users_update.num_system"
-                                                   class="form-control shadow-input mt-2 border-transparent bg-sub font-14 text-muted">
-                                            <span v-if="flashMsg.num_system" class="text-danger font-12 fw-400">{{ flashMsg.num_system[0] }}</span>
-                                        </div>
-                                        <div class="form-group mb-3 text-start">
-                                            <label class="fw-400 text-label font-14">Email</label>
-                                            <input type="email" v-model="users_update.email"
-                                                   class="form-control shadow-input mt-2 border-transparent bg-sub font-14 text-muted">
-                                            <span v-if="flashMsg.email"
-                                                  class="text-danger font-12 fw-400">{{ flashMsg.email[0] }}</span>
-                                        </div>
-                                        <div class="form-group mb-3 text-start">
-                                            <label class="fw-400 form-label font-14">Phone</label>
-                                            <input type="text" v-model="users_update.phone"
-                                                   class="form-control shadow-input mt-2 border-transparent bg-sub font-14 text-muted">
-                                            <span v-if="flashMsg.phone" class="text-danger font-12 fw-400">{{ flashMsg.phone[0] }}</span>
-                                        </div>
-                                        <div class="form-group mb-3 text-start">
-                                            <label class="fw-400 text-label font-14">Password</label>
-                                            <input type="password" v-model="users_update.password"
-                                                   class="form-control shadow-input mt-2 border-transparent bg-sub font-14 text-muted">
-                                            <span v-if="flashMsg.password"
-                                                  class="text-danger font-12 fw-400">{{ flashMsg.password[0] }}</span>
-                                        </div>
-                                        <div class="text-center my-2">
-                                            <button type="submit"
-                                                    class="btn px-4 bg-button font-14 text-label rounded-10 border-0">
-                                                <sapn>Update</sapn><i v-if="loading_update" class="fas fa-spinner ms-1 fa-spin text-white"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="modalDeleteUser" aria-hidden="true"
-                         aria-labelledby="exampleModalLabel" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content bg-main mx-md-5 rounded-top-20 rounded-bottom-20">
-                                <div class="modal-header bg-linear rounded-top-20 border-bottom-0">
-                                    <h5 class="modal-title" id="exampleModalLabelDeleteUser">Delete a user</h5>
-                                    <button type="button" class="btn border-0 p-0 ms-auto" id="CloseDeleteUser"
-                                            data-bs-dismiss="modal" aria-label="Close">
-                                        <img :src="'../assets/images/icons8-cancel-30.png'" width="16" alt="">
-                                    </button>
-                                </div>
-                                <div class="modal-body px-4 py-2 bg-main rounded-bottom-20 text-start">
-                                    <h5 class="text-center mb-0">Are you sure to delete this user ?</h5>
-                                </div>
-                                <div class="modal-footer border-0 bg-main justify-content-center">
-                                    <button type="button" class="btn btn-secondary close-btn ms-auto"
-                                            data-bs-dismiss="modal">Cancel
-                                    </button>
-                                    <button type="button" @click="DestroyUser" class="btn btn-danger"><span>Yes, delete</span><i v-if="loading_delete" class="fas fa-spinner ms-1 fa-spin text-white"></i>
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="card px-3">
+        <div class="row">
+            <div class="col-md-6 mb-3 my-md-auto">
+                <h5 class="card-header">Table Basic</h5>
             </div>
-
-            <div class="bg-sub shadow-input px-3 py-3 mt-3 rounded-top-4 overflow-auto">
-                <div class="d-flex mx-auto w-100">
-                    <div class="w-10 my-2 my-md-auto text-center ps-2">
-                        <h5 class="text-label font-16 mb-0">#</h5>
-                    </div>
-                    <div class="w-20 my-2 my-md-auto text-center ps-2">
-                        <h5 class="text-label font-16 mb-0">Image</h5>
-                    </div>
-                    <div class="w-20 my-2 my-md-auto text-center ps-2">
-                        <h5 class="text-label font-16 mb-0">Name</h5>
-                    </div>
-                    <div class="w-20 my-2 my-md-auto text-center ps-2">
-                        <h5 class="text-label font-16 mb-0">Number System</h5>
-                    </div>
-                    <div class="w-20 my-2 my-md-auto text-center ps-2 ">
-                        <h5 class="text-label font-16 mb-0">Email</h5>
-                    </div>
-                    <div class="w-20 my-2 my-md-auto text-center ps-2 ">
-                        <h5 class="text-label font-16 mb-0">Phone</h5>
-                    </div>
-                    <div class="w-20 my-2 my-md-auto text-center ps-2">
-                        <h5 class="text-label font-16 mb-0">Action</h5>
-                    </div>
-
-                </div>
-            </div>
-            <div class="h-default">
-                <div class="bg-sub shadow-input px-3 py-3 my-4 rounded-top-4 overflow-auto "
-                     v-for="(user, index) in users" :key="user.id">
-                    <div class="d-flex mx-auto w-100">
-                        <div class="w-10 my-2 my-md-auto text-center ps-2">
-                            <h5 class="text-label font-14 mb-0">{{ index + 1 }}</h5>
-                        </div>
-                        <div class="w-20 my-2 my-md-auto text-center">
-                            <img :src="user.image ? '../storage/'+user.image : '../assets/images/logo.png'"
-                                 :width="'35'" class="align-middle " alt="">
-                        </div>
-                        <div class="w-20 my-2 my-md-auto text-center ps-2">
-                            <h5 class="text-label font-14 mb-0">{{ user.name }}</h5>
-                        </div>
-                        <div class="w-20 my-2 my-md-auto text-center ps-2">
-                            <h5 class="text-label font-14 mb-0">{{ user.num_system }}</h5>
-                        </div>
-                        <div class="w-20 my-2 my-md-auto text-center ps-2">
-                            <h5 class="text-label font-14 mb-0">{{ user.email }}</h5>
-                        </div>
-                        <div class="w-20 my-2 my-md-auto text-center ps-2">
-                            <h5 class="text-label font-14 mb-0">{{ user.phone }}</h5>
-                        </div>
-                        <div class="w-20 my-2 my-md-auto text-center ps-2">
-                            <h5 class="text-label font-14 mb-0">
-                                <button type="button" class="mx-2 bg-transparent border-0" data-bs-toggle="modal"
-                                        @click="editUser(user.id, index)"
-                                        :data-bs-target="'#modalEditUser'">
-                                    <img :src="'../assets/images/edit.svg'" width="16" alt="">
-                                </button>
-                                <button type="button" class="mx-2 bg-transparent border-0" data-bs-toggle="modal"
-                                        @click="deleteUser(user.id, index)"
-                                        :data-bs-target="'#modalDeleteUser'">
-                                    <img :src="'../assets/images/delete.svg'" width="16" alt="">
-                                </button>
-                            </h5>
-                        </div>
-                    </div>
-                </div>
-                <div v-if="this.loading === true" id="loader" class="w-100 text-center mt-4">
-                    <i class="fas fa-spinner fa-spin fa-2x" style="color: #797D90;"></i>
-                </div>
-                <button type="button" class="btn d-block text-center text-white font-14 fw-400 mx-auto" v-if="!this.finished && !this.loading" @click="plusPage()">Show More</button>
+            <div class="col-md-6 mb-3 my-md-auto text-end">
+                <button type="button" class="btn btn-primary px-2" data-bs-toggle="modal" data-bs-target="#modalCreateUser">
+                    <i class="fas fa-plus align-items-center me-1"></i> <span class=" align-items-center">{{ __('Create User', this.lang) }}</span>
+                </button>
             </div>
         </div>
+        <div class="modal fade" id="modalCreateUser" tabindex="-1" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalCreateUserTitle">{{ __('Create User', this.lang) }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="updateUser_easy">
+                        <form @submit.prevent="AddUser" enctype="multipart/form-data">
+                            <div class="row justify-content-center">
+                                <div class="col-12 text-center mb-3">
+                                    <div id="file-upload-filename"
+                                         class="text-right text-truncate w-75 name-file-upload position-absolute"></div>
+                                    <label for="file-upload-communication-comments-create"
+                                           class="btn text-muted text-center p-1 mb-0 mx-auto position-relative bg-image-border p-0 bg-sub shadow-sm">
+                                        <img id="selected-image" class="w-100 h-100 object-fit-cover" style="display:none;" src="" alt="">
+                                    </label>
+                                    <small class="text-muted d-block py-2 font-12 fw-light">{{ __('Click to Add Your Profile Image', this.lang) }}</small>
+
+                                    <input type="file" v-on:change="selectedFile" class="input-file start-0 file-upload-communication-comments-create"
+                                           id="file-upload-communication-comments-create"/>
+                                    <div class="file-upload-filename-communication-comments-create mx-auto w-100 text-truncate"></div>
+                                    <span v-if="flashMsg.image"
+                                          class="text-danger font-12 fw-400">{{ flashMsg.image[0] }}</span>
+
+                                </div>
+
+                            </div>
+                            <div class="row g-2">
+                                <div class="col mb-0">
+                                    <label class="form-label">{{ __('Name', this.lang) }}</label>
+                                    <input type="text" v-model="user.name"
+                                           class="form-control" placeholder="Your Name">
+                                    <span v-if="flashMsg.name" class="text-danger font-12 fw-400">{{ flashMsg.name[0] }}</span>
+                                </div>
+                                <div class="col mb-0">
+                                    <label class="form-label">{{ __('Number System', this.lang) }}</label>
+                                    <input type="text" v-model="user.num_system"
+                                           class="form-control" placeholder="Number">
+                                    <span v-if="flashMsg.num_system" class="text-danger font-12 fw-400">{{ flashMsg.num_system[0] }}</span>
+                                </div>
+                            </div>
+                            <div class="row g-2 mt-2">
+                                <div class="col mb-0">
+                                    <label class="form-label">{{ __('Email', this.lang) }}</label>
+                                    <input type="email" v-model="user.email"
+                                           class="form-control" placeholder="Email">
+                                    <span v-if="flashMsg.email"
+                                          class="text-danger font-12 fw-400">{{ flashMsg.email[0] }}</span>
+                                </div>
+                                <div class="col mb-0">
+                                    <label class="form-label">{{ __('Phone', this.lang) }}</label>
+                                    <input type="text" v-model="user.phone"
+                                           class="form-control" placeholder="phone number">
+                                    <span v-if="flashMsg.phone" class="text-danger font-12 fw-400">{{ flashMsg.phone[0] }}</span>
+                                </div>
+                            </div>
+                            <div class="row g-2 mt-2">
+                                <div class="col mb-0">
+                                    <label class="form-label">{{ __('Password', this.lang) }}</label>
+                                    <input type="password" v-model="user.password"
+                                           class="form-control" placeholder="*********">
+                                    <span v-if="flashMsg.password"
+                                          class="text-danger font-12 fw-400">{{ flashMsg.password[0] }}</span>
+                                </div>
+                            </div>
+                            <div class="modal-footer px-0 mb-0 pb-0 mt-2">
+                                <button type="button" class="btn btn-outline-secondary" id="CloseCreateUser" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes <i v-if="loading_create" class="fas fa-spinner ms-1 fa-spin text-white"></i></button>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>{{ __('Name', this.lang) }}</th>
+                    <th>{{ __('Number System', this.lang) }}</th>
+                    <th>{{ __('Email', this.lang) }}</th>
+                    <th>{{ __('Phone', this.lang) }}</th>
+                    <th>{{ __('Action', this.lang) }}</th>
+                </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                <tr v-for="(user, index) in users" :key="user.id">
+                    <td>{{ index + 1 }}</td>
+                    <td><img :src="user.image ? user.image : '../assets/images/logo.png'"
+                             :width="'30'" height="30" class="align-middle object-fit-contain rounded" :class="user.image ? '' : 'bg-user-image p-1'" alt=""> <span class="fw-medium">{{ user.name }}</span></td>
+                    <td><span class="badge bg-label-primary me-1">{{ user.num_system }}</span></td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>
+                        <button type="button" @click="editUser(user.id, index)" class="btn btn-primary px-2" data-bs-toggle="modal" data-bs-target="#modalCenter">
+                            <i class="fas fa-edit"></i>
+                        </button>
+
+                        <button type="button" @click="deleteUser(user.id, index)" class="btn btn-primary ms-1 px-2" data-bs-toggle="modal" data-bs-target="#modalCenterDelete">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal fade" id="modalCenter" tabindex="-1" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalCenterTitle">Edit a user</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="updateUser_easy">
+                            <form @submit.prevent="UpdateUser" id="" enctype="multipart/form-data">
+                                <div class="row justify-content-center">
+                                    <div class="col-12 text-center mb-3">
+                                        <label for="file-upload-communication-comments-update"
+                                               class="btn text-muted text-center p-1 mb-0 mx-auto position-relative bg-image-border p-0 bg-sub shadow-sm">
+                                            <img id="selected-update-image" v-if="users_update.image == null" class="w-100 h-100 object-fit-cover" style="display:none;" src="" alt="">
+                                            <img id="selected-update-image" v-else class="w-100 h-100 object-fit-cover" :src="users_update.image" alt="">
+                                        </label>
+                                        <small class="text-main d-block py-2 font-12 fw-light">Click to Add Your Profile Image</small>
+
+                                        <input type="file" v-on:change="selectedFileEdit" class="input-file start-0 file-upload-communication-comments-create"
+                                               id="file-upload-communication-comments-update"/>
+                                        <div class="file-upload-filename-communication-comments-create mx-auto w-100 text-truncate"></div>
+                                        <span v-if="flashMsg.image"
+                                              class="text-danger font-12 fw-400">{{ flashMsg.image[0] }}</span>
+                                    </div>
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col mb-0">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" v-model="users_update.name"
+                                               class="form-control" placeholder="Your Name">
+                                        <span v-if="flashMsg.name" class="text-danger font-12 fw-400">{{ flashMsg.name[0] }}</span>
+                                    </div>
+                                    <div class="col mb-0">
+                                        <label class="form-label">Number System</label>
+                                        <input type="text" v-model="users_update.num_system"
+                                               class="form-control" placeholder="Number">
+                                        <span v-if="flashMsg.num_system" class="text-danger font-12 fw-400">{{ flashMsg.num_system[0] }}</span>
+                                    </div>
+                                </div>
+                                <div class="row g-2 mt-2">
+                                    <div class="col mb-0">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" v-model="users_update.email"
+                                               class="form-control" placeholder="Email">
+                                        <span v-if="flashMsg.email"
+                                              class="text-danger font-12 fw-400">{{ flashMsg.email[0] }}</span>
+                                    </div>
+                                    <div class="col mb-0">
+                                        <label class="form-label">Phone</label>
+                                        <input type="text" v-model="users_update.phone"
+                                               class="form-control" placeholder="phone number">
+                                        <span v-if="flashMsg.phone" class="text-danger font-12 fw-400">{{ flashMsg.phone[0] }}</span>
+                                    </div>
+                                </div>
+                                <div class="row g-2 mt-2">
+                                    <div class="col mb-0">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" v-model="users_update.password"
+                                               class="form-control" placeholder="*********">
+                                        <span v-if="flashMsg.password"
+                                              class="text-danger font-12 fw-400">{{ flashMsg.password[0] }}</span>
+                                    </div>
+                                </div>
+                                <div class="modal-footer px-0 mb-0 pb-0 mt-2">
+                                    <button type="button" class="btn btn-outline-secondary" id="CloseEditUser" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes <i v-if="loading_update" class="fas fa-spinner ms-1 fa-spin text-white"></i></button>
+                                </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="modalCenterDelete" tabindex="-1" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalCenterTitleDelete">Delete User</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5 class="text-center mb-0">Are you sure to delete this user ?</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" id="CloseDeleteUser" data-bs-dismiss="modal" >Close</button>
+                            <button type="button" class="btn btn-danger" @click="DestroyUser">Yes , Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="this.loading === true" id="loader" class="w-100 text-center my-3">
+                <i class="fas fa-spinner fa-spin text-primary fa-2x" style="color: #797D90;"></i>
+            </div>
+            <button type="button" class="btn d-block text-center text-white font-14 fw-400 mx-auto" v-if="!this.finished && !this.loading" @click="plusPage()">Show More</button>
+        </div>
+    </div>
+    <div v-if="showSuccessMsg">
+        <alert-message :successMsg="this.successMsg"></alert-message>
     </div>
 </template>
 
@@ -274,6 +236,7 @@ export default {
         'users_edit',
         'users_delete',
         'users_show',
+        'lang',
     ],
     data() {
         const user = reactive({

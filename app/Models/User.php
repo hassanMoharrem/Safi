@@ -24,6 +24,10 @@ class User extends Authenticatable
         'image',
         'num_system',
         'phone',
+        'lang',
+        'verify_code',
+        'is_verified',
+        'num_verify_code',
     ];
 
     /**
@@ -50,5 +54,9 @@ class User extends Authenticatable
     }
     public function dessertStation(){
         return $this->hasMany(DessertStation::class);
+    }
+    public function getImageAttribute($value)
+    {
+        return $value ? url('storage/' . $value) : url('assets/images/logo.png');
     }
 }

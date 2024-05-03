@@ -98,6 +98,9 @@ return [
     'cipher' => 'AES-256-CBC',
 
     'key' => env('APP_KEY'),
+    'NEXMO_API_KEY' => env('NEXMO_API_KEY'),
+    'NEXMO_API_SECRET' => env('NEXMO_API_SECRET'),
+    'NEXMO_SMS_FROM' => env('NEXMO_SMS_FROM'),
 
     'previous_keys' => [
         ...array_filter(

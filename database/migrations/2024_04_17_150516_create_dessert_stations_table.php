@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('dessert_stations', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
+            $table->string('name_ar')->nullable();
             $table->integer('phase')->nullable();
             $table->bigInteger('user_id')->nullable();
             $table->timestamps();

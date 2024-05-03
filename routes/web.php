@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+Route::post('locale',[\App\Http\Controllers\LanguageController::class,'switch'])->name('language.switch');
 
 Route::get('/', function () {
     return view('welcome');

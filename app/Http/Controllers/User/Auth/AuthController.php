@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
-
+use Vonage\Client;
+use Vonage\Client\Credentials\Basic;
+use Vonage\SMS\Message\SMS;
 class AuthController extends Controller
 {
     public function loginIndex()
@@ -26,7 +28,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(),[
-            'phone' => 'required|exists:users,phone',
+            'email' => 'required|email|exists:users,email',
             'password' => 'required|max:300',
         ]);
         if($validator->fails()){
@@ -35,15 +37,40 @@ class AuthController extends Controller
                 "errors" => $validator->errors(),
             ]);
         }
-        if (Auth::guard('web')->attempt(['phone' => $request->phone, 'password' => $request->password])) {
-            $user = User::where('phone',$request->phone)->first();
-            auth()->login($user);
-            $user['token'] =  $user->createToken('MyApp')->plainTextToken;
-            return response()->json([
-                "status" => 200,
-                "message" => "تم الدخول بنجاح",
-                'data' => $user
-            ]);
+
+        if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user = User::where('email',$request->email)->first();
+            if ($user->is_verified == true){
+                auth()->login($user);
+                $user['token'] =  $user->createToken('MyApp')->plainTextToken;
+                return response()->json([
+                    "status" => 200,
+                    "message" => "تم الدخول بنجاح",
+                    'data' => $user
+                ]);
+            }else{
+                $verify_code = rand(10000, 99999);
+                $user->verify_code = $verify_code;
+                $basic  = new Basic(config('app.NEXMO_API_KEY'), config('app.NEXMO_API_SECRET'));
+                $client = new Client($basic);
+                $message = new SMS($user->phone, config('app.NEXMO_SMS_FROM'), "Confirm your mobile number: $verify_code\n");
+                $response = $client->sms()->send($message);
+                $ress = $response->current();
+                if ($ress->getStatus() == 0) {
+                    return response()->json([
+                        "status" => 200,
+                        'success' => true,
+                        "message" => " برجى تأكيد رقم الهاتف",
+                    ]);
+                } else {
+                    return response()->json([
+                        "status" => $ress->getStatus(),
+                        'success' => false,
+                        "message" => "The message failed with status",
+                    ]);
+                }
+            }
+
         } else {
             $errors = new MessageBag();
             $errors->add('Error', __('The data is wrong'));
@@ -53,40 +80,96 @@ class AuthController extends Controller
             ]);
         }
     }
-    public function registerIndex()
-    {
-        return view('user.auth.register');
-    }
+
     public function register(Request $request)
     {
         $validation = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:50|unique:users,name',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8',
-            'image' => 'nullable|image',
+            'password' => 'required|min:6',
+            'phone' => 'required|numeric|digits:12|unique:users,phone',
+            'image' => 'nullable|image'
         ]);
         if ($validation->fails()) {
-            $message = $validation->errors();
-            return redirect()->back()->withInput()->withErrors($validation->errors())->with('customVariable', $message);
+            return response()->json([
+                "status" => false,
+                "errors" => $validation->errors(),
+            ]);
         }
         $input = $request->all();
-        if ($request->hasFile('image')) {
-            $image = $request->file('image')->store('images', 'public');
-        } else {
-            $image = $input['image'];
+
+        if (isset($input['image'])) {
+            $file = $input['image'];
+            $input['image'] = $file->store('images', 'public');
         }
 
         $input['password'] = Hash::make($input['password']);
-        $input['image'] = $image;
+        $input['num_system'] = 1;
+
+        $verify_code = rand(10000, 99999);
+        $input['verify_code'] = $verify_code;
+        $input['is_verified'] = false;
         $user = User::create($input);
-        auth()->login($user);
-        return redirect()->route('user.dashboard');
+        $user['token'] =  $user->createToken('MyApp')->plainTextToken;
+//      geterate code and send save code
+
+        $basic  = new Basic(config('app.NEXMO_API_KEY'), config('app.NEXMO_API_SECRET'));
+        $client = new Client($basic);
+        $message = new SMS($user->phone, config('app.NEXMO_SMS_FROM'), "Confirm your mobile number: $verify_code\n");
+        $response = $client->sms()->send($message);
+        $ress = $response->current();
+        if ($ress->getStatus() == 0) {
+            return response()->json([
+                "status" => 200,
+                'success' => true,
+                "message" => "تم تسجيل المستخدم بنجاح ، برجى تأكيد رقم الهاتف",
+                'user' => $user,
+            ]);
+        } else {
+            return response()->json([
+                "status" => $ress->getStatus(),
+                'success' => false,
+                "message" => "The message failed with status",
+            ]);
+        }
+
+    }
+    public function verifyCode(Request $request){
+        $validator = Validator::make($request->all(),[
+            'code_number' => 'required|numeric|digits:5',
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                "status" => false,
+                "errors" => $validator->errors(),
+            ]);
+        }
+        $user = auth()->user();
+        if ($request->code_number == auth()->user()->verify_code && !auth()->user()->is_verified){
+            $user->is_verified = true;
+            $user->save();
+            return response()->json([
+                "status" => 200,
+                'success' => true,
+                "message" => "تم تسجيل المستخدم بنجاح",
+            ]);
+        }else{
+            return response()->json([
+                "status" => 500,
+                'success' => false,
+                "message" => "خطأ في الكود",
+            ]);
+        }
     }
 
     public function logout()
     {
         Session::flush();
         Auth::guard('web')->logout();
-        return redirect()->route('user.login.index');
+        return response()->json([
+            "status" => 200,
+            'success' => true,
+            "message" => "تم تسجيل خروج مستخدم بنجاح",
+        ]);
     }
 }

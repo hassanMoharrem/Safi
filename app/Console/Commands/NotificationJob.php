@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\DessertStation;
 use App\Models\UpdatePhase;
+use App\Models\User;
 use App\Notifications\NewStation;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -30,14 +31,17 @@ class NotificationJob extends Command
      */
     public function handle()
     {
-
         $data = UpdatePhase::query()
-            ->whereDate('last_date', Carbon::now()->addDay()->toDateString())
+            ->whereDate('last_date','<', Carbon::now()->addDay()->toDateString())
             ->get();
         foreach ($data as $row){
-            $station = DessertStation::query()->where('id',$row->station_id)->where('user_id',auth()->id())->first();
+            $station = DessertStation::query()->where('id',$row->station_id)->first();
             $phase = UpdatePhase::query()->where('station_id',$row->station_id)->first();
-            $row->notify(new NewStation($station,$phase));
+            $user = User::query()->find($station->user_id);
+            if ($user){
+                $user->notify(new NewStation($station,$phase));
+            }
+
         }
 
     }
