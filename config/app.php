@@ -101,6 +101,9 @@ return [
     'NEXMO_API_KEY' => env('NEXMO_API_KEY'),
     'NEXMO_API_SECRET' => env('NEXMO_API_SECRET'),
     'NEXMO_SMS_FROM' => env('NEXMO_SMS_FROM'),
+    'TWILIO_SID' => env('TWILIO_SID'),
+    'TWILIO_AUTH_TOKEN' => env('TWILIO_AUTH_TOKEN'),
+    'TWILIO_WHATSAPP_SENDER' => env('TWILIO_WHATSAPP_SENDER'),
 
     'previous_keys' => [
         ...array_filter(

@@ -10,9 +10,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
-use Vonage\Client;
-use Vonage\Client\Credentials\Basic;
-use Vonage\SMS\Message\SMS;
+use mysql_xdevapi\Exception;
+use Twilio\Rest\Client;
+
+//use Vonage\Client;
+//use Vonage\Client\Credentials\Basic;
+//use Vonage\SMS\Message\SMS;
 class AuthController extends Controller
 {
     public function loginIndex()
@@ -49,26 +52,27 @@ class AuthController extends Controller
                     'data' => $user
                 ]);
             }else{
-                $verify_code = rand(10000, 99999);
+//                $verify_code = rand(10000, 99999);
+                $verify_code = 12345;
                 $user->verify_code = $verify_code;
-                $basic  = new Basic(config('app.NEXMO_API_KEY'), config('app.NEXMO_API_SECRET'));
-                $client = new Client($basic);
-                $message = new SMS($user->phone, config('app.NEXMO_SMS_FROM'), "Confirm your mobile number: $verify_code\n");
-                $response = $client->sms()->send($message);
-                $ress = $response->current();
-                if ($ress->getStatus() == 0) {
+//                $basic  = new Basic(config('app.NEXMO_API_KEY'), config('app.NEXMO_API_SECRET'));
+//                $client = new Client($basic);
+//                $message = new SMS($user->phone, config('app.NEXMO_SMS_FROM'), "Confirm your mobile number: $verify_code\n");
+//                $response = $client->sms()->send($message);
+//                $ress = $response->current();
+//                if ($ress->getStatus() == 0) {
                     return response()->json([
                         "status" => 200,
                         'success' => true,
                         "message" => " برجى تأكيد رقم الهاتف",
                     ]);
-                } else {
-                    return response()->json([
-                        "status" => $ress->getStatus(),
-                        'success' => false,
-                        "message" => "The message failed with status",
-                    ]);
-                }
+//                } else {
+//                    return response()->json([
+//                        "status" => $ress->getStatus(),
+//                        'success' => false,
+//                        "message" => "The message failed with status",
+//                    ]);
+//                }
             }
 
         } else {
@@ -106,32 +110,56 @@ class AuthController extends Controller
         $input['password'] = Hash::make($input['password']);
         $input['num_system'] = 1;
 
-        $verify_code = rand(10000, 99999);
+//        $verify_code = rand(10000, 99999);
+        $verify_code = 12345;
         $input['verify_code'] = $verify_code;
         $input['is_verified'] = false;
         $user = User::create($input);
         $user['token'] =  $user->createToken('MyApp')->plainTextToken;
 //      geterate code and send save code
+//
+//        $basic  = new Basic(config('app.NEXMO_API_KEY'), config('app.NEXMO_API_SECRET'));
+//        $client = new Client($basic);
+//        $message = new SMS($user->phone, config('app.NEXMO_SMS_FROM'), "Confirm your mobile number: $verify_code\n");
+//        $response = $client->sms()->send($message);
+//        $ress = $response->current();
+//        if ($ress->getStatus() == 0) {
+//            return response()->json([
+//                "status" => 200,
+//                'success' => true,
+//                "message" => "تم تسجيل المستخدم بنجاح ، برجى تأكيد رقم الهاتف",
+//                'user' => $user,
+//            ]);
+//        } else {
+//            return response()->json([
+//                "status" => $ress->getStatus(),
+//                'success' => false,
+//                "message" => "The message failed with status",
+//            ]);
+//        }
 
-        $basic  = new Basic(config('app.NEXMO_API_KEY'), config('app.NEXMO_API_SECRET'));
-        $client = new Client($basic);
-        $message = new SMS($user->phone, config('app.NEXMO_SMS_FROM'), "Confirm your mobile number: $verify_code\n");
-        $response = $client->sms()->send($message);
-        $ress = $response->current();
-        if ($ress->getStatus() == 0) {
+//        $twilio = new Client(config('app.TWILIO_SID'), config('app.TWILIO_AUTH_TOKEN'));
+//
+//        try {
+//            $twilio->messages->create(
+//                "whatsapp:" . $user->phone,
+//                [
+//                    "from" => "whatsapp:" . config('app.TWILIO_WHATSAPP_SENDER'),
+//                    "body" => 'Confirm your mobile number: '.$verify_code
+//                ]
+//            );
             return response()->json([
                 "status" => 200,
                 'success' => true,
-                "message" => "تم تسجيل المستخدم بنجاح ، برجى تأكيد رقم الهاتف",
-                'user' => $user,
+                "message" => " برجى تأكيد رقم الهاتف",
             ]);
-        } else {
-            return response()->json([
-                "status" => $ress->getStatus(),
-                'success' => false,
-                "message" => "The message failed with status",
-            ]);
-        }
+//        }catch (\Exception $e){
+//            return response()->json([
+//                "status" => 500,
+//                'success' => false,
+//                "message" => $e->getMessage(),
+//            ]);
+//        }
 
     }
     public function verifyCode(Request $request){
