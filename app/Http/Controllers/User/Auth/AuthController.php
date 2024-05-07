@@ -152,6 +152,7 @@ class AuthController extends Controller
                 "status" => 200,
                 'success' => true,
                 "message" => " برجى تأكيد رقم الهاتف",
+                "user" => $user,
             ]);
 //        }catch (\Exception $e){
 //            return response()->json([
