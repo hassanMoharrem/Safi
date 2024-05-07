@@ -3,9 +3,9 @@
 use Illuminate\Support\Facades\Route;
 Route::post('locale',[\App\Http\Controllers\LanguageController::class,'switch'])->name('language.switch');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [\App\Http\Controllers\Admin\Auth\AuthController::class, 'loginIndex'])->name('login.index');
     Route::post('/login', [\App\Http\Controllers\Admin\Auth\AuthController::class, 'login'])->name('login.store');
