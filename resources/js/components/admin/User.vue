@@ -2,7 +2,7 @@
     <div class="card px-3">
         <div class="row">
             <div class="col-md-6 mb-3 my-md-auto">
-                <h5 class="card-header">Table Basic</h5>
+                <h5 class="card-header">{{ __('Table', this.lang) }}</h5>
             </div>
             <div class="col-md-6 mb-3 my-md-auto text-end">
                 <button type="button" class="btn btn-primary px-2" data-bs-toggle="modal" data-bs-target="#modalCreateUser">
@@ -42,13 +42,13 @@
                                 <div class="col mb-0">
                                     <label class="form-label">{{ __('Name', this.lang) }}</label>
                                     <input type="text" v-model="user.name"
-                                           class="form-control" placeholder="Your Name">
+                                           class="form-control" :placeholder="__('Name', this.lang)">
                                     <span v-if="flashMsg.name" class="text-danger font-12 fw-400">{{ flashMsg.name[0] }}</span>
                                 </div>
                                 <div class="col mb-0">
                                     <label class="form-label">{{ __('Number System', this.lang) }}</label>
                                     <input type="text" v-model="user.num_system"
-                                           class="form-control" placeholder="Number">
+                                           class="form-control" :placeholder="__('Number System', this.lang)">
                                     <span v-if="flashMsg.num_system" class="text-danger font-12 fw-400">{{ flashMsg.num_system[0] }}</span>
                                 </div>
                             </div>
@@ -56,14 +56,14 @@
                                 <div class="col mb-0">
                                     <label class="form-label">{{ __('Email', this.lang) }}</label>
                                     <input type="email" v-model="user.email"
-                                           class="form-control" placeholder="Email">
+                                           class="form-control" :placeholder="__('Email', this.lang)">
                                     <span v-if="flashMsg.email"
                                           class="text-danger font-12 fw-400">{{ flashMsg.email[0] }}</span>
                                 </div>
                                 <div class="col mb-0">
                                     <label class="form-label">{{ __('Phone', this.lang) }}</label>
                                     <input type="text" v-model="user.phone"
-                                           class="form-control" placeholder="phone number">
+                                           class="form-control" :placeholder="__('Phone', this.lang)">
                                     <span v-if="flashMsg.phone" class="text-danger font-12 fw-400">{{ flashMsg.phone[0] }}</span>
                                 </div>
                             </div>
@@ -71,7 +71,7 @@
                                 <div class="col mb-0">
                                     <label class="form-label">{{ __('Password', this.lang) }}</label>
                                     <input type="password" v-model="user.password"
-                                           class="form-control" placeholder="*********">
+                                           class="form-control" placeholder="*******">
                                     <span v-if="flashMsg.password"
                                           class="text-danger font-12 fw-400">{{ flashMsg.password[0] }}</span>
                                 </div>
@@ -103,7 +103,7 @@
                 <tbody class="table-border-bottom-0">
                 <tr v-for="(user, index) in users" :key="user.id">
                     <td>{{ index + 1 }}</td>
-                    <td><img :src="user.image ? user.image : '../assets/images/logo.png'"
+                    <td><img :src="user.image ? user.image : '../assets/images/logo.jpeg'"
                              :width="'30'" height="30" class="align-middle object-fit-contain rounded" :class="user.image ? '' : 'bg-user-image p-1'" alt=""> <span class="fw-medium">{{ user.name }}</span></td>
                     <td><span class="badge bg-label-primary me-1">{{ user.num_system }}</span></td>
                     <td>{{ user.email }}</td>
@@ -198,15 +198,15 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalCenterTitleDelete">Delete User</h5>
+                            <h5 class="modal-title" id="modalCenterTitleDelete">{{ __('Delete User',this.lang)}}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <h5 class="text-center mb-0">Are you sure to delete this user ?</h5>
+                            <h5 class="text-center mb-0">{{ __('Are you sure to delete this user ?',this.lang)}}</h5>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" id="CloseDeleteUser" data-bs-dismiss="modal" >Close</button>
-                            <button type="button" class="btn btn-danger" @click="DestroyUser">Yes , Delete</button>
+                            <button type="button" class="btn btn-danger" @click="DestroyUser">{{ __('Yes , Delete',this.lang)}}</button>
                         </div>
                     </div>
                 </div>

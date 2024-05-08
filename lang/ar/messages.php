@@ -9,7 +9,7 @@
         'Hello' => 'مرحبا',
         'You are now in the private control panel on the Safi platform. Where you can control the platform' => 'أنت الآن في لوحة التحكم الخاصة على منصة صافي. حيث يمكنك التحكم بالمنصة',
         'View Users' => 'مشاهدة المستخدمين',
-        'Table Basic' => 'مشاهدة المستخدمين',
+        'Table' => 'الجدول',
         'Create User' => 'إنشاء مستخدم',
         // Add more translations as needed
     ];

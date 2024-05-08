@@ -7,6 +7,10 @@
         'LogOut' => 'LogOut',
         'Total Systems' => 'Total Systems',
         'Hello' => 'Hello',
+        'View Users' => 'View Users',
+        'Table Basic' => 'Table Basic',
+        'You are now in the private control panel on the Safi platform. Where you can control the platform' => 'You are now in the private control panel on the Safi platform. Where you can control the platform',
+
         // Add more translations as needed
     ];
 ?>

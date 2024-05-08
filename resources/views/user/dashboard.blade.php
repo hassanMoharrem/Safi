@@ -54,7 +54,7 @@
                 <div class="col-md-4 my-2 my-md-0">
                     <div class="px-2 ps-md-5 pe-md-3">
                         <div class="rounded-card-scan bg-sub padding-card-scan text-center">
-                            <img src="assets/images/logo.png" width="30" alt="manea logo">
+                            <img src="assets/images/logo.jpeg" width="30" alt="manea logo">
                             <h5 class="font-size-20 d-inline-block ms-1 align-middle mb-0">Manea</h5>
                             <p class="font-13 fw-400 text-muted mt-2">Lorem ipsum dolor sit amet consectetur. Nulla non morbi fermentum magna pharetra sit sit mattis. Sodales risus vehicula diam duis sed praesent.</p>
                             <div class="row mx-auto w-100 mt-2">

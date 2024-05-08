@@ -15,7 +15,7 @@
     <div class="container">
         <div class="row mx-auto w-100 g-0">
             <div class="col-6 my-2 my-md-auto">
-                <img src="{{ asset('assets/images/logo.png') }}" width="36" height="41" alt="Manea Ticket">
+                <img src="{{ asset('assets/images/logo.jpeg') }}" width="36" height="41" alt="Manea Ticket">
                 <h5 class="font-size-20 d-inline-block ms-1 align-middle mb-0">Manea Ticket</h5>
             </div>
             <div class="col-6 my-2 my-md-auto text-end">

@@ -9,6 +9,9 @@ const lang =
         'Phone' :"رقم الهاتف",
         'Password' :"كلمة المرور",
         'Action' :"التحكم",
+        'Table' :"جدول العرض",
+        'Yes , Delete' :"نعم ، حذف",
+        'Are you sure to delete this user ?' :"هل أنت متأكد من عمليت الحذف ؟",
     };
 
 window.__ = function(key, locale)

@@ -4,7 +4,7 @@
         <div class="row justify-content-center align-items-center all-login min-vh-100">
             <div class="col-md-5 text-center">
                 <div class="rounded-30 shadow-login p-3 mt-0 bg-main">
-                    <img src="{{ asset('assets/images/logo.png') }}" class="bg-main mn-t-5 mb-3 contain rounded-circle p-2 shadow-login" alt="Manea" width="75px" height="75px">
+                    <img src="{{ asset('assets/images/logo.jpeg') }}" class="bg-main mn-t-5 mb-3 contain rounded-circle p-2 shadow-login" alt="Manea" width="75px" height="75px">
                     <div class="text-center">
                         <form  method="post" action="{{ route('user.register.store') }}" enctype="multipart/form-data"
                               class="mx-2">
