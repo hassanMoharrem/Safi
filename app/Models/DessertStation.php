@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class DessertStation extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'name_ar', 'phase', 'user_id'];
+    protected $fillable = ['name', 'phase', 'user_id'];
 
     public function user(){
         return $this->belongsTo(User::class);

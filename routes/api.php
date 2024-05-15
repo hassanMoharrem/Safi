@@ -18,6 +18,7 @@ Route::prefix('admin')->name('api.admin.')->group(function () {
 });
 Route::middleware('guest')->name('user.')->group(function () {
     Route::post('/login', [\App\Http\Controllers\User\Auth\AuthController::class, 'login'])->name('login.store');
+    Route::post('/social', [\App\Http\Controllers\User\Auth\AuthController::class, 'loginRegister'])->name('login.loginRegister');
     Route::post('/register', [\App\Http\Controllers\User\Auth\AuthController::class, 'register'])->name('register.store');
 });
 Route::middleware('auth:sanctum')->group( function () {
@@ -47,7 +48,7 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::get('/myReadNotifications', [\App\Http\Controllers\User\NotificationController::class, 'showRead'])->name('DataReadNotifications');
         Route::delete('delete/{id}', [\App\Http\Controllers\User\NotificationController::class, 'destroy'])->name('DeleteNotification');
     });
-    Route::post('/verify', [\App\Http\Controllers\User\Auth\AuthController::class, 'verifyCode'])->withoutMiddleware([\App\Http\Middleware\VerifyUser::class]);
+//    Route::post('/verify', [\App\Http\Controllers\User\Auth\AuthController::class, 'verifyCode'])->withoutMiddleware([\App\Http\Middleware\VerifyUser::class]);
     Route::get('/logout', [\App\Http\Controllers\User\Auth\AuthController::class, 'logout'])->name('logout');
 
 });

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Str;
 use mysql_xdevapi\Exception;
 use Twilio\Rest\Client;
 
@@ -43,7 +44,7 @@ class AuthController extends Controller
 
         if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = User::where('email',$request->email)->first();
-            if ($user->is_verified == true){
+            if ($user->is_verified){
                 auth()->login($user);
                 $user['token'] =  $user->createToken('MyApp')->plainTextToken;
                 return response()->json([
@@ -91,7 +92,7 @@ class AuthController extends Controller
             'name' => 'required|string|min:3|max:50|unique:users,name',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'phone' => 'required|numeric|digits:12|unique:users,phone',
+            'phone' => 'nullable|numeric|digits:12|unique:users,phone',
             'image' => 'nullable|image'
         ]);
         if ($validation->fails()) {
@@ -114,9 +115,15 @@ class AuthController extends Controller
 //        $verify_code = rand(10000, 99999);
         $verify_code = 12345;
         $input['verify_code'] = $verify_code;
-        $input['is_verified'] = false;
+        $input['is_verified'] = true;
         $user = User::create($input);
+        auth()->login($user);
         $user['token'] =  $user->createToken('MyApp')->plainTextToken;
+        return response()->json([
+            "status" => 200,
+            "message" => "تم الدخول بنجاح",
+            'user' => $user
+        ]);
 //      geterate code and send save code
 //
 //        $basic  = new Basic(config('app.NEXMO_API_KEY'), config('app.NEXMO_API_SECRET'));
@@ -149,12 +156,12 @@ class AuthController extends Controller
 //                    "body" => 'Confirm your mobile number: '.$verify_code
 //                ]
 //            );
-            return response()->json([
-                "status" => 200,
-                'success' => true,
-                "message" => " برجى تأكيد رقم الهاتف",
-                "user" => $user
-            ]);
+//            return response()->json([
+//                "status" => 200,
+//                'success' => true,
+//                "message" => " برجى تأكيد رقم الهاتف",
+//                "user" => $user
+//            ]);
 //        }catch (\Exception $e){
 //            return response()->json([
 //                "status" => 500,
@@ -162,6 +169,55 @@ class AuthController extends Controller
 //                "message" => $e->getMessage(),
 //            ]);
 //        }
+
+    }
+    public function loginRegister(Request $request)
+    {
+        $email = $request->input('email');
+        $user = User::where('email',$email)->first();
+        if ($user){
+            auth()->login($user);
+            $user['token'] =  $user->createToken('MyApp')->plainTextToken;
+            return response()->json([
+                "status" => 200,
+                "message" => "تم الدخول بنجاح",
+                'user' => $user
+            ]);
+        }else{
+            $validation = Validator::make($request->all(), [
+                'name' => 'required|string|min:3|max:200|unique:users,name',
+                'email' => 'required|email|unique:users,email',
+                'image' => 'nullable|url'
+            ]);
+            if ($validation->fails()) {
+                return response()->json([
+                    "status" => 403,
+                    'success' => false,
+                    "errors" => $validation->errors(),
+                ]);
+            }
+            $input = $request->all();
+//
+//            if (isset($input['image'])) {
+//                $file = $input['image'];
+//                $input['image'] = $input['image'];
+//            }
+            $input['num_system'] = 1;
+            $input['is_verified'] = 1;
+            $input['password'] = Hash::make(Str::random(25));
+            $user = User::create($input);
+            auth()->login($user);
+            $user['token'] =  $user->createToken('MyApp')->plainTextToken;
+
+            return response()->json([
+                "status" => 200,
+                'success' => true,
+                "user" => $user,
+                "message" => "تم الدخول بنجاح",
+            ]);
+
+        }
+
 
     }
     public function verifyCode(Request $request){

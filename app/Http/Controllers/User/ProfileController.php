@@ -31,8 +31,9 @@ class ProfileController extends BaseController
             'name' => 'required|string|min:3|max:50|unique:users,name,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|min:6',
-            'phone' => 'required|numeric|digits:10|unique:users,phone,'. $id,
-            'image' => 'nullable|image'
+            'phone' => 'nullable|numeric|digits:10|unique:users,phone,'. $id,
+            'image' => 'nullable|image',
+            'lang' => 'nullable|in:en,ar',
         ];
 
         return parent::updateBase($id,$model,$params,$rules); // Pass the $id , $model , $params & $rules  variable to the parent method
