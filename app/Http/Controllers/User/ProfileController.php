@@ -31,7 +31,7 @@ class ProfileController extends BaseController
             'name' => 'required|string|min:3|max:50|unique:users,name,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|min:6',
-            'phone' => 'nullable|numeric|digits:10|unique:users,phone,'. $id,
+            'phone' => 'nullable|numeric|digits:12|unique:users,phone,'. $id,
             'image' => 'nullable|image',
             'lang' => 'nullable|in:en,ar',
         ];
