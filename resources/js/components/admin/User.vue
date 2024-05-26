@@ -124,7 +124,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalCenterTitle">Edit a user</h5>
+                            <h5 class="modal-title" id="modalCenterTitle">Edit a user {{lang}} 1</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body" id="updateUser_easy">
@@ -302,7 +302,7 @@ export default {
             formData.append('phone', this.user.phone);
             formData.append('password', this.user.password ? this.user.password : '');
             const config = {
-                headers: {'content-type': 'multipart/form-data'}
+                headers: {'content-type': 'multipart/form-data','Accept-Language': this.lang}
             }
             axios.post(this.users_add, formData, config)
                 .then((res) => {
@@ -343,7 +343,11 @@ export default {
             document.getElementById('updateUser_easy').style.opacity='0';
             this.flashMsg = '';
             this.loading_data = true;
-            axios.post(this.users_show + '/' + id)
+            axios.post(this.users_show + '/' + id,[],{
+                headers:{
+                    'Accept-Language': this.lang,
+                }
+            })
                 .then((res) => {
                     this.users_update = res.data;
                     this.key_index = index;
@@ -365,7 +369,7 @@ export default {
             formDataEdit.append('phone', this.users_update.phone);
             formDataEdit.append('password', this.users_update.password ? this.users_update.password : '');
             const config = {
-                headers: {'content-type': 'multipart/form-data'}
+                headers: {'content-type': 'multipart/form-data','Accept-Language': this.lang}
             }
             axios.post(this.users_edit + '/' + this.users_update.id, formDataEdit, config)
                 .then((res) => {
@@ -395,7 +399,10 @@ export default {
         },
         async DestroyUser() {
             this.loading_delete = true;
-            axios.post(this.users_delete + '/' + this.del_id, this.user)
+            const config = {
+                headers: {'Accept-Language': this.lang}
+            }
+            axios.post(this.users_delete + '/' + this.del_id, this.user,config)
                 .then((res) => {
                     localStorage.setItem('name', res.data.name);
                     this.users.splice(this.key_index, 1)

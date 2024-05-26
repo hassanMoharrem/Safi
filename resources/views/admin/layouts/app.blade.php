@@ -93,7 +93,6 @@
 </head>
 
 <body>
-{{ app()->getLocale() }}
 <!-- Layout Content -->
 <div class="layout-wrapper layout-content-navbar ">
 

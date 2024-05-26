@@ -31,6 +31,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $lang = $request->header('Accept-Language') ?? 'en';
         $validator = Validator::make($request->all(),[
             'email' => 'required|email|exists:users,email',
             'password' => 'required|max:300',
@@ -44,29 +45,29 @@ class AuthController extends Controller
 
         if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = User::where('email',$request->email)->first();
-            if ($user->is_verified){
+//            if ($user->is_verified){
                 auth()->login($user);
                 $user['token'] =  $user->createToken('MyApp')->plainTextToken;
                 return response()->json([
                     "status" => 200,
-                    "message" => "تم الدخول بنجاح",
+                    "message" => $lang == 'ar' ? "تم الدخول بنجاح" : "Login Successfully",
                     'data' => $user
                 ]);
-            }else{
+//            }else{
 //                $verify_code = rand(10000, 99999);
-                $verify_code = 12345;
-                $user->verify_code = $verify_code;
+//                $verify_code = 12345;
+//                $user->verify_code = $verify_code;
 //                $basic  = new Basic(config('app.NEXMO_API_KEY'), config('app.NEXMO_API_SECRET'));
 //                $client = new Client($basic);
 //                $message = new SMS($user->phone, config('app.NEXMO_SMS_FROM'), "Confirm your mobile number: $verify_code\n");
 //                $response = $client->sms()->send($message);
 //                $ress = $response->current();
 //                if ($ress->getStatus() == 0) {
-                    return response()->json([
-                        "status" => 200,
-                        'success' => true,
-                        "message" => " برجى تأكيد رقم الهاتف",
-                    ]);
+//                    return response()->json([
+//                        "status" => 200,
+//                        'success' => true,
+//                        "message" => $lang == 'ar' ? " برجى تأكيد رقم الهاتف" : "Please verify phone number",
+//                    ]);
 //                } else {
 //                    return response()->json([
 //                        "status" => $ress->getStatus(),
@@ -74,11 +75,11 @@ class AuthController extends Controller
 //                        "message" => "The message failed with status",
 //                    ]);
 //                }
-            }
+//            }
 
         } else {
             $errors = new MessageBag();
-            $errors->add('Error', __('The data is wrong'));
+            $errors->add('Error', $lang == 'ar' ? "عذراً ، خطأ في البيانات" : "The data is wrong");
             return response()->json([
                 "status" => false,
                 "message" => $errors,
@@ -88,11 +89,12 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        $lang = $request->header('Accept-Language') ?? 'en';
         $validation = Validator::make($request->all(), [
-            'name' => 'required|string|min:3|max:50|unique:users,name',
+            'name' => 'required|string|min:3|max:50',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
-            'phone' => 'nullable|numeric|digits:12|unique:users,phone',
+            'phone' => 'nullable|numeric|unique:users,phone',
             'image' => 'nullable|image'
         ]);
         if ($validation->fails()) {
@@ -121,7 +123,7 @@ class AuthController extends Controller
         $user['token'] =  $user->createToken('MyApp')->plainTextToken;
         return response()->json([
             "status" => 200,
-            "message" => "تم الدخول بنجاح",
+            "message" => $lang == 'ar' ? "تم الدخول بنجاح" : "Login Successfully",
             'user' => $user
         ]);
 //      geterate code and send save code
@@ -173,6 +175,7 @@ class AuthController extends Controller
     }
     public function loginRegister(Request $request)
     {
+        $lang = $request->header('Accept-Language') ?? 'en';
         $email = $request->input('email');
         $user = User::where('email',$email)->first();
         if ($user){
@@ -180,12 +183,12 @@ class AuthController extends Controller
             $user['token'] =  $user->createToken('MyApp')->plainTextToken;
             return response()->json([
                 "status" => 200,
-                "message" => "تم الدخول بنجاح",
+                "message" => $lang == 'ar' ? "تم الدخول بنجاح" : "Login Successfully",
                 'user' => $user
             ]);
         }else{
             $validation = Validator::make($request->all(), [
-                'name' => 'required|string|min:3|max:200|unique:users,name',
+                'name' => 'required|string|min:3|max:200',
                 'email' => 'required|email|unique:users,email',
                 'image' => 'nullable|url'
             ]);
@@ -213,7 +216,7 @@ class AuthController extends Controller
                 "status" => 200,
                 'success' => true,
                 "user" => $user,
-                "message" => "تم الدخول بنجاح",
+                "message" => $lang == 'ar' ? "تم الدخول بنجاح" : "Login Successfully",
             ]);
 
         }
@@ -248,14 +251,15 @@ class AuthController extends Controller
         }
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        $lang = $request->header('Accept-Language') ?? 'en';
         Session::flush();
         Auth::guard('web')->logout();
         return response()->json([
             "status" => 200,
             'success' => true,
-            "message" => "تم تسجيل خروج مستخدم بنجاح",
+            "message" => $lang == 'ar' ? "تم تسجيل خروج مستخدم بنجاح" : "Logout Successfully",
         ]);
     }
 }

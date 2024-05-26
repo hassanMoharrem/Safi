@@ -21,7 +21,7 @@ class BaseController extends Controller
             'data_count' => $data_count
         ]);
     }
-    public function storeBase($model , array $params, array $rules)
+    public function storeBase($model , array $params, array $rules , $lang)
     {
         $validator = Validator::make($params, $rules);
 
@@ -53,7 +53,7 @@ class BaseController extends Controller
         }
         return response()->json([
             'status' => 200,
-            'message' => 'Data Created',
+            'message' => $lang == 'ar' ? 'تم إنشاء البيانات بنجاح' :'Data Created',
             'success' => true,
             'data' => $data,
             'data_count' => $data_count,
@@ -64,7 +64,7 @@ class BaseController extends Controller
         $date = $model::find($id);
         return response()->json($date);
     }
-    public function updateBase($id ,$model ,array $params, array $rules){
+    public function updateBase($id ,$model ,array $params, array $rules , $lang){
         $validator = Validator::make($params, $rules);
 
         if ($validator->fails()) {
@@ -102,26 +102,27 @@ class BaseController extends Controller
         $find->update($params);
         return response()->json([
             'status' => 200,
-            'message' => 'User updated',
+            'message' => $lang == 'ar' ? 'تم تحديث بنجاح' : 'Data updated',
             'success' => true,
             'data' => $find,
         ]);
 
     }
-    public function destroyBase($id , $model)
+    public function destroyBase($id , $model ,$lang)
     {
+
         try {
             $find = $model::find($id);
             $find->delete();
             return response()->json([
                 'status' => 200,
-                'message' => 'Data deleted',
+                'message' => $lang == 'ar' ? 'تم الحذف بنجاح' : 'Data deleted',
                 'success' => true,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,
-                'message' => 'Error ',
+                'message' => $lang == 'ar' ? 'خطأ' : 'Error',
                 'success' => false,
             ]);
         }
