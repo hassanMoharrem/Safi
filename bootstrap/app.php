@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->api(append: [
             \App\Http\Middleware\VerifyUser::class,
+            \App\Http\Middleware\LocalizationApiMiddleware::class,
         ]);
         $middleware->redirectGuestsTo('/admin/login');
     })
