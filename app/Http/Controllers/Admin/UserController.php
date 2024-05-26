@@ -32,7 +32,7 @@ class UserController extends BaseController
         $rules = [
             'name' => 'required|string|min:3|max:50|unique:users,name',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
+            'password' => 'required|min:1',
             'num_system' => 'nullable|numeric|min:1',
             'phone' => 'required|numeric|digits:10|unique:users,phone',
             'image' => 'nullable|image'
@@ -54,7 +54,7 @@ class UserController extends BaseController
         $rules = [
             'name' => 'required|string|min:3|max:50|unique:users,name,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|min:6',
+            'password' => 'nullable|min:1',
             'phone' => 'required|numeric|digits:10|unique:users,phone,'. $id,
             'image' => 'nullable|image'
         ];
