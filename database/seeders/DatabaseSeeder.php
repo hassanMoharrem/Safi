@@ -21,12 +21,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
             'phone' => '1234567891',
+            'is_verified' => 'true',
             'password' => Hash::make('12345678'),
         ]);
         User::create([
             'name' => 'User user',
             'email' => 'user@user.com',
             'phone' => '0123456789',
+            'is_verified' => 'true',
             'password' => Hash::make('12345678'),
         ]);
         Admin::create([
