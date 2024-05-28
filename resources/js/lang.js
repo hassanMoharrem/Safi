@@ -11,7 +11,14 @@ const lang =
         'Action' :"التحكم",
         'Table' :"جدول العرض",
         'Yes , Delete' :"نعم ، حذف",
+        'Empty' :"فارغ",
         'Are you sure to delete this user ?' :"هل أنت متأكد من عمليت الحذف ؟",
+        'Station' :"أنظمة",
+        'Number Phase' :"عدد المراحل",
+        'Data is null' :"لا يوجد بيانات",
+        'Create dessert Station' :"إنشاء نظام تحلية",
+        'Save changes' :"حفظ التغيرات",
+        'Close' :"إغلاق",
     };
 
 window.__ = function(key, locale)

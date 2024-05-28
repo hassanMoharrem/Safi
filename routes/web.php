@@ -13,6 +13,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/',[\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/users',[\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
+    Route::get('/user/show/{id}',[\App\Http\Controllers\Admin\UserController::class, 'showUser'])->name('user.show');
     Route::get('/logout', [\App\Http\Controllers\Admin\Auth\AuthController::class, 'logout'])->name('logout');
 });
 

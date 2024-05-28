@@ -34,7 +34,7 @@ class UserController extends BaseController
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:1',
             'num_system' => 'nullable|numeric|min:1',
-            'phone' => 'required|numeric|digits:10|unique:users,phone',
+            'phone' => 'nullable|numeric|unique:users,phone',
             'image' => 'nullable|image'
         ];
         return parent::storeBase($model,$params,$rules ,$lang); // Pass the $view variable to the parent method
@@ -45,6 +45,12 @@ class UserController extends BaseController
         $lang = request()->header('Accept-Language') ?? 'en';
         $model = User::class;
         return parent::showBase($id,$model); // Pass the $view variable to the parent method
+    }
+    public function showUser($user_id)
+    {
+        $view = 'admin.users.show';
+        $user = User::with('dessertStation')->findOrFail($user_id);
+        return view($view,compact('user'));
     }
 
     public function update($id){

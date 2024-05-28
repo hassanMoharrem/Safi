@@ -77,8 +77,8 @@
                                 </div>
                             </div>
                             <div class="modal-footer px-0 mb-0 pb-0 mt-2">
-                                <button type="button" class="btn btn-outline-secondary" id="CloseCreateUser" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes <i v-if="loading_create" class="fas fa-spinner ms-1 fa-spin text-white"></i></button>
+                                <button type="button" class="btn btn-outline-secondary" id="CloseCreateUser" data-bs-dismiss="modal">{{ __('Close',this.lang)}}</button>
+                                <button type="submit" class="btn btn-primary">{{ __('Save changes',this.lang)}} <i v-if="loading_create" class="fas fa-spinner ms-1 fa-spin text-white"></i></button>
                             </div>
                         </form>
 
@@ -107,8 +107,11 @@
                              :width="'30'" height="30" class="align-middle object-fit-contain rounded" :class="user.image ? '' : 'bg-user-image p-1'" alt=""> <span class="fw-medium">{{ user.name }}</span></td>
                     <td><span class="badge bg-label-primary me-1">{{ user.num_system }}</span></td>
                     <td>{{ user.email }}</td>
-                    <td>{{ user.phone }}</td>
+                    <td>{{ user.phone ? user.phone : __('Empty',this.lang) }}</td>
                     <td>
+                        <a :href="user_show+'/'+user.id" class="btn btn-primary me-1 px-2">
+                            <i class="fas fa-eye"></i>
+                        </a>
                         <button type="button" @click="editUser(user.id, index)" class="btn btn-primary px-2" data-bs-toggle="modal" data-bs-target="#modalCenter">
                             <i class="fas fa-edit"></i>
                         </button>
@@ -184,8 +187,8 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer px-0 mb-0 pb-0 mt-2">
-                                    <button type="button" class="btn btn-outline-secondary" id="CloseEditUser" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Save changes <i v-if="loading_update" class="fas fa-spinner ms-1 fa-spin text-white"></i></button>
+                                    <button type="button" class="btn btn-outline-secondary" id="CloseEditUser" data-bs-dismiss="modal">{{ __('Close',this.lang)}}</button>
+                                    <button type="submit" class="btn btn-primary">{{ __('Save changes',this.lang)}} <i v-if="loading_update" class="fas fa-spinner ms-1 fa-spin text-white"></i></button>
                                 </div>
                             </form>
 
@@ -236,6 +239,7 @@ export default {
         'users_edit',
         'users_delete',
         'users_show',
+        'user_show',
         'lang',
     ],
     data() {
@@ -295,11 +299,11 @@ export default {
             document.getElementById('selected-image').style.display = 'none';
             this.loading_create = true;
             let formData = new FormData();
-            formData.append('image', this.image);
-            formData.append('email', this.user.email);
-            formData.append('name', this.user.name);
-            formData.append('num_system', this.user.num_system);
-            formData.append('phone', this.user.phone);
+            formData.append('image', this.image ? this.image : '');
+            formData.append('email', this.user.email ? this.user.email : '');
+            formData.append('name', this.user.name ? this.user.name : '');
+            formData.append('num_system', this.user.num_system ? this.user.num_system : '');
+            formData.append('phone', this.user.phone ? this.user.phone : '');
             formData.append('password', this.user.password ? this.user.password : '');
             const config = {
                 headers: {'content-type': 'multipart/form-data','Accept-Language': this.lang}

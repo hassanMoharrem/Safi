@@ -7,6 +7,7 @@
             users_edit="{{ route('api.admin.users.UpdateUser','') }}"
             users_delete="{{ route('api.admin.users.DeleteUser','') }}"
             users_show="{{ route('api.admin.users.ShowUser','') }}"
+            user_show="{{ route('admin.user.show','' )}}"
             lang="{{ app()->getLocale() }}"
         ></users>
     </div>

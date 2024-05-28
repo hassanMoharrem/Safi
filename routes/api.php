@@ -15,12 +15,18 @@ Route::prefix('admin')->name('api.admin.')->group(function () {
         Route::post('/update/{id}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('UpdateUser');
         Route::post('/delete/{id}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('DeleteUser');
     });
+    Route::prefix('stations')->name('stations.')->controller(\App\Http\Controllers\Admin\DessertStationController::class)->group(function(){
+        Route::get('/all/{id}','index')->name('data');
+        Route::post('/create','store')->name('store');
+        Route::post('/delete/{id}','destroy')->name('delete');
+    });
 });
 Route::middleware('guest')->name('user.')->group(function () {
     Route::post('/login', [\App\Http\Controllers\User\Auth\AuthController::class, 'login'])->name('login.store');
     Route::post('/social', [\App\Http\Controllers\User\Auth\AuthController::class, 'loginRegister'])->name('login.loginRegister');
     Route::post('/register', [\App\Http\Controllers\User\Auth\AuthController::class, 'register'])->name('register.store');
 });
+
 Route::middleware('auth:sanctum')->group( function () {
 
     Route::prefix('station')->controller(\App\Http\Controllers\User\DessertStationController::class)->group(function(){

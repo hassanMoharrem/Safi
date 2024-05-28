@@ -8,7 +8,7 @@ export default {
 
 <template>
     <div class="alert alert-success alert-dismissible transition position-fixed bottom-0 mx-4 my-5" role="alert">
-        Alert / {{ successMsg }} , check it out! !
+        {{ successMsg }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
         </button>
     </div>
