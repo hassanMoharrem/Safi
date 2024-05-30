@@ -148,29 +148,29 @@ class AuthController extends Controller
 //            ]);
 //        }
 
-//        $twilio = new Client(config('app.TWILIO_SID'), config('app.TWILIO_AUTH_TOKEN'));
-//
-//        try {
-//            $twilio->messages->create(
-//                "whatsapp:" . $user->phone,
-//                [
-//                    "from" => "whatsapp:" . config('app.TWILIO_WHATSAPP_SENDER'),
-//                    "body" => 'Confirm your mobile number: '.$verify_code
-//                ]
-//            );
-//            return response()->json([
-//                "status" => 200,
-//                'success' => true,
-//                "message" => " برجى تأكيد رقم الهاتف",
-//                "user" => $user
-//            ]);
-//        }catch (\Exception $e){
-//            return response()->json([
-//                "status" => 500,
-//                'success' => false,
-//                "message" => $e->getMessage(),
-//            ]);
-//        }
+        $twilio = new Client(config('app.TWILIO_SID'), config('app.TWILIO_AUTH_TOKEN'));
+
+        try {
+            $twilio->messages->create(
+                "whatsapp:" . $user->phone,
+                [
+                    "from" => "whatsapp:" . config('app.TWILIO_WHATSAPP_SENDER'),
+                    "body" => 'Confirm your mobile number: '.$verify_code
+                ]
+            );
+            return response()->json([
+                "status" => 200,
+                'success' => true,
+                "message" => " برجى تأكيد رقم الهاتف",
+                "user" => $user
+            ]);
+        }catch (\Exception $e){
+            return response()->json([
+                "status" => 500,
+                'success' => false,
+                "message" => $e->getMessage(),
+            ]);
+        }
 
     }
     public function loginRegister(Request $request)
