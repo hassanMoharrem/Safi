@@ -8,29 +8,29 @@ Route::get("aa",function (){
     \Illuminate\Support\Facades\Artisan::call("migrate:fresh --seed");
 });
 
-Route::get("send/test",function (){
-    $twilioSid = config('app.TWILIO_SID');
-    $twilioToken = config('app.TWILIO_AUTH_TOKEN');
-    $twilioWhatsAppNumber = "whatsapp:" . config('app.TWILIO_WHATSAPP_SENDER');
-    $recipientNumber = 'whatsapp:+972595544707'; // Replace with the recipient's phone number in WhatsApp format (e.g., "whatsapp:+1234567890")
-    $message = "Hello from Twilio WhatsApp API in Laravel! 🚀";
-
-    $twilio = new Client($twilioSid, $twilioToken);
-
-    try {
-        $twilio->messages->create(
-            $recipientNumber,
-            [
-                "from" => $twilioWhatsAppNumber,
-                "body" => $message,
-            ]
-        );
-
-        return response()->json(['message' => 'WhatsApp message sent successfully']);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
-});
+//Route::get("send/test",function (){
+//    $twilioSid = config('app.TWILIO_SID');
+//    $twilioToken = config('app.TWILIO_AUTH_TOKEN');
+//    $twilioWhatsAppNumber = "whatsapp:" . config('app.TWILIO_WHATSAPP_SENDER');
+//    $recipientNumber = 'whatsapp:+972595544707'; // Replace with the recipient's phone number in WhatsApp format (e.g., "whatsapp:+1234567890")
+//    $message = "Hello from Twilio WhatsApp API in Laravel! 🚀";
+//
+//    $twilio = new Client($twilioSid, $twilioToken);
+//
+//    try {
+//        $twilio->messages->create(
+//            'whatsapp:+972595544707',
+//            [
+//                "from" => $twilioWhatsAppNumber,
+//                "body" => $message,
+//            ]
+//        );
+//
+//        return response()->json(['message' => $twilioWhatsAppNumber .'WhatsApp message sent successfully']);
+//    } catch (\Exception $e) {
+//        return response()->json(['error' => $e->getMessage()], 500);
+//    }
+//});
 
 
 Route::post('locale',[\App\Http\Controllers\LanguageController::class,'switch'])->name('language.switch');

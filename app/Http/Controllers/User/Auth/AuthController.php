@@ -148,29 +148,29 @@ class AuthController extends Controller
 //            ]);
 //        }
 
-        $twilio = new Client(config('app.TWILIO_SID'), config('app.TWILIO_AUTH_TOKEN'));
-
-        try {
-            $twilio->messages->create(
-                "whatsapp:" . $user->phone,
-                [
-                    "from" => "whatsapp:" . config('app.TWILIO_WHATSAPP_SENDER'),
-                    "body" => 'Confirm your mobile number: '.$verify_code
-                ]
-            );
-            return response()->json([
-                "status" => 200,
-                'success' => true,
-                "message" => " برجى تأكيد رقم الهاتف",
-                "user" => $user
-            ]);
-        }catch (\Exception $e){
-            return response()->json([
-                "status" => 500,
-                'success' => false,
-                "message" => $e->getMessage(),
-            ]);
-        }
+//        $twilio = new Client(config('app.TWILIO_SID'), config('app.TWILIO_AUTH_TOKEN'));
+//
+//        try {
+//            $twilio->messages->create(
+//                "whatsapp:" . $user->phone,
+//                [
+//                    "from" => "whatsapp:" . config('app.TWILIO_WHATSAPP_SENDER'),
+//                    "body" => 'Confirm your mobile number: '.$verify_code
+//                ]
+//            );
+//            return response()->json([
+//                "status" => 200,
+//                'success' => true,
+//                "message" => " برجى تأكيد رقم الهاتف",
+//                "user" => $user
+//            ]);
+//        }catch (\Exception $e){
+//            return response()->json([
+//                "status" => 500,
+//                'success' => false,
+//                "message" => $e->getMessage(),
+//            ]);
+//        }
 
     }
     public function loginRegister(Request $request)
@@ -223,33 +223,33 @@ class AuthController extends Controller
 
 
     }
-    public function verifyCode(Request $request){
-        $validator = Validator::make($request->all(),[
-            'code_number' => 'required|numeric|digits:5',
-        ]);
-        if($validator->fails()){
-            return response()->json([
-                "status" => false,
-                "errors" => $validator->errors(),
-            ]);
-        }
-        $user = auth()->user();
-        if ($request->code_number == auth()->user()->verify_code && !auth()->user()->is_verified){
-            $user->is_verified = true;
-            $user->save();
-            return response()->json([
-                "status" => 200,
-                'success' => true,
-                "message" => "تم تسجيل المستخدم بنجاح",
-            ]);
-        }else{
-            return response()->json([
-                "status" => 500,
-                'success' => false,
-                "message" => "خطأ في الكود",
-            ]);
-        }
-    }
+//    public function verifyCode(Request $request){
+//        $validator = Validator::make($request->all(),[
+//            'code_number' => 'required|numeric|digits:5',
+//        ]);
+//        if($validator->fails()){
+//            return response()->json([
+//                "status" => false,
+//                "errors" => $validator->errors(),
+//            ]);
+//        }
+//        $user = auth()->user();
+//        if ($request->code_number == auth()->user()->verify_code && !auth()->user()->is_verified){
+//            $user->is_verified = true;
+//            $user->save();
+//            return response()->json([
+//                "status" => 200,
+//                'success' => true,
+//                "message" => "تم تسجيل المستخدم بنجاح",
+//            ]);
+//        }else{
+//            return response()->json([
+//                "status" => 500,
+//                'success' => false,
+//                "message" => "خطأ في الكود",
+//            ]);
+//        }
+//    }
 
     public function logout(Request $request)
     {
