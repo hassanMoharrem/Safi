@@ -44,9 +44,11 @@ class BaseController extends Controller
                 $params['password'] = Hash::make($params['password']);
             }
         }
-
         $data = $model::create($params);
-        if (isset($params['user_id'])){
+        if (isset($params['station_id'])){
+            $data_count = $model::query()->where('station_id',$params['station_id'])->count();
+        }
+        elseif (isset($params['user_id'])){
             $data_count = $model::query()->where('user_id',$params['user_id'])->count();
         }else{
             $data_count = $model::query()->count();

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class UpdatePhaseController extends BaseController
 {
-    public function index($id )
+    public function index($id)
     {
         $lang = request()->header('Accept-Language') ?? 'en';
         $station = DessertStation::query()->where('id', $id)->where('user_id', auth()->id())->first();

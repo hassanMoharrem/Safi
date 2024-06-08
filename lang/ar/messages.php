@@ -11,6 +11,7 @@
         'View Users' => 'مشاهدة المستخدمين',
         'Table' => 'الجدول',
         'Create User' => 'إنشاء مستخدم',
+        'Total Update Phases' =>"عدد المراحل في الأنظمة",
         // Add more translations as needed
     ];
 ?>

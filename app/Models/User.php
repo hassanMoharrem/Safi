@@ -57,6 +57,6 @@ class User extends Authenticatable
     }
     public function getImageAttribute($value)
     {
-        return $value ? url('storage/' . $value) : url('assets/images/logo.jpeg');
+        return $value ? url('storage/' . $value) : '';
     }
 }

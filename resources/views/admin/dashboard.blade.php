@@ -45,7 +45,7 @@
 
                                     </div>
                                     <span>@lang('messages.Total Systems')</span>
-                                    <h3 class="card-title text-nowrap mb-1 pt-2 pb-3">{{ $parameters['totalSystems'] }}</h3>
+                                    <h3 class="card-title text-nowrap mb-1 pt-2 pb-3">{{ $parameters['station'] }}</h3>
 
                                 </div>
                             </div>
@@ -132,10 +132,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <span class="d-block mb-1">Payments</span>
-                                    <h3 class="card-title text-nowrap mb-2">$2,456</h3>
-                                    <small class="text-danger fw-semibold"><i class='bx bx-down-arrow-alt'></i>
-                                        -14.82%</small>
+                                    <span class="d-block mb-1">@lang('messages.Total Update Phases')</span>
+                                    <h3 class="card-title text-nowrap mb-2">{{ $parameters['phase'] }}</h3>
+                                    <small class="text-success fw-semibold"><i class='bx bx-up-arrow-alt'></i>
+                                        +{{ $parameters['total_phase_percentage'] }}%</small>
                                 </div>
                             </div>
                         </div>

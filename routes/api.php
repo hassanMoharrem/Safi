@@ -20,6 +20,11 @@ Route::prefix('admin')->name('api.admin.')->group(function () {
         Route::post('/create','store')->name('store');
         Route::post('/delete/{id}','destroy')->name('delete');
     });
+    Route::prefix('phases')->name('phases.')->controller(\App\Http\Controllers\Admin\UpdatePhaseController::class)->group(function(){
+        Route::get('/all/{id}','index')->name('data');
+        Route::post('/create','store')->name('store');
+        Route::post('/delete/{id}','destroy')->name('delete');
+    });
 });
 Route::middleware('guest')->name('user.')->group(function () {
     Route::post('/login', [\App\Http\Controllers\User\Auth\AuthController::class, 'login'])->name('login.store');

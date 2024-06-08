@@ -45,6 +45,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/',[\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/users',[\App\Http\Controllers\Admin\UserController::class, 'index'])->name('users.index');
+    Route::get('/station/{id}',[\App\Http\Controllers\Admin\UpdatePhaseController::class, 'indexPage'])->name('update.index');
     Route::get('/user/show/{id}',[\App\Http\Controllers\Admin\UserController::class, 'showUser'])->name('user.show');
     Route::get('/logout', [\App\Http\Controllers\Admin\Auth\AuthController::class, 'logout'])->name('logout');
 });
@@ -56,11 +57,11 @@ Route::middleware('guest')->name('user.')->group(function () {
     Route::get('/register', [\App\Http\Controllers\User\Auth\AuthController::class, 'registerIndex'])->name('register.index');
     Route::post('/register', [\App\Http\Controllers\User\Auth\AuthController::class, 'register'])->name('register.store');
 });
-Route::middleware('auth')->group(function () {
-    Route::get('/dashboard',[\App\Http\Controllers\User\DashboardController::class, 'index'])->name('user.dashboard');
-    Route::get('/profile',[\App\Http\Controllers\User\ProfileController::class, 'index'])->name('user.profile');
-    Route::post('/profile/{id}',[\App\Http\Controllers\User\ProfileController::class, 'show'])->name('user.profile.show');
-    Route::post('/profile',[\App\Http\Controllers\User\ProfileController::class, 'edit'])->name('user.profile.edit');
-    Route::post('/update',[\App\Http\Controllers\User\ProfileController::class, 'update'])->name('user.profile.update');
-    Route::get('/logout', [\App\Http\Controllers\User\Auth\AuthController::class, 'logout'])->name('logout');
-});
+//Route::middleware('auth')->group(function () {
+//    Route::get('/dashboard',[\App\Http\Controllers\User\DashboardController::class, 'index'])->name('user.dashboard');
+//    Route::get('/profile',[\App\Http\Controllers\User\ProfileController::class, 'index'])->name('user.profile');
+//    Route::post('/profile/{id}',[\App\Http\Controllers\User\ProfileController::class, 'show'])->name('user.profile.show');
+//    Route::post('/profile',[\App\Http\Controllers\User\ProfileController::class, 'edit'])->name('user.profile.edit');
+//    Route::post('/update',[\App\Http\Controllers\User\ProfileController::class, 'update'])->name('user.profile.update');
+//    Route::get('/logout', [\App\Http\Controllers\User\Auth\AuthController::class, 'logout'])->name('logout');
+//});

@@ -66,9 +66,9 @@
                     <td>{{ dessert.name }}</td>
                     <td><span class="badge bg-label-primary me-1">{{ dessert.phase }}</span></td>
                     <td>
-<!--                        <a :href="user_show+'/'+user.id" class="btn btn-primary ms-1 px-2">-->
-<!--                            <i class="fas fa-eay-alt"></i>-->
-<!--                        </a>-->
+                        <a :href="stations_show+'/'+dessert.id" class="btn btn-primary ms-1 px-2">
+                            <i class="fas fa-eye"></i>
+                        </a>
 <!--                        <button type="button" @click="editUser(user.id, index)" class="btn btn-primary px-2" data-bs-toggle="modal" data-bs-target="#modalCenter">-->
 <!--                            <i class="fas fa-edit"></i>-->
 <!--                        </button>-->
@@ -90,10 +90,10 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <h5 class="text-center mb-0">{{ __('Are you sure to delete this Dessert ?',this.lang)}}</h5>
+                            <h5 class="text-center mb-0">{{ __('Are you sure to delete ?',this.lang)}}</h5>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" id="CloseDeleteDessert" data-bs-dismiss="modal" >Close</button>
+                            <button type="button" class="btn btn-outline-secondary" id="CloseDeleteDessert" data-bs-dismiss="modal" >{{ __('Close',this.lang)}}</button>
                             <button type="button" class="btn btn-danger" @click="DestroyDessert">{{ __('Yes , Delete',this.lang)}}</button>
                         </div>
                     </div>
@@ -122,6 +122,7 @@ export default {
         'user_name',
         'user_id',
         'dessarts_data',
+        'stations_show',
         'dessert_add',
         'dessert_delete',
         'lang',
@@ -207,11 +208,11 @@ export default {
 
                 });
         },
-    async deleteDessert(id , index) {
+        async deleteDessert(id , index) {
         this.del_id = id;
         this.key_index = index;
     },
-    async DestroyDessert() {
+        async DestroyDessert() {
         this.loading_delete = true;
         const config = {
             headers: {'Accept-Language': this.lang}
@@ -237,7 +238,6 @@ export default {
                 this.flashMsg = err.response.data.message;
             });
     }
-
     },
     async created() {
         this.getDessert();

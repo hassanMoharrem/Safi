@@ -33,7 +33,7 @@ class UserController extends BaseController
             'name' => 'required|string|min:3|max:50|unique:users,name',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:1',
-            'num_system' => 'nullable|numeric|min:1',
+            'num_system' => 'required|numeric|min:1',
             'phone' => 'nullable|numeric|unique:users,phone',
             'image' => 'nullable|image'
         ];
@@ -61,7 +61,8 @@ class UserController extends BaseController
             'name' => 'required|string|min:3|max:50|unique:users,name,' . $id,
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|min:1',
-            'phone' => 'required|numeric|digits:10|unique:users,phone,'. $id,
+            'num_system' => 'required|numeric|min:1',
+            'phone' => 'nullable|numeric|digits:10|unique:users,phone,'. $id,
             'image' => 'nullable|image'
         ];
         return parent::updateBase($id,$model,$params,$rules,$lang); // Pass the $view variable to the parent method

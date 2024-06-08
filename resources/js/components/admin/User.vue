@@ -17,7 +17,7 @@
                         <h5 class="modal-title" id="modalCreateUserTitle">{{ __('Create User', this.lang) }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body" id="updateUser_easy">
+                    <div class="modal-body" >
                         <form @submit.prevent="AddUser" enctype="multipart/form-data">
                             <div class="row justify-content-center">
                                 <div class="col-12 text-center mb-3">
@@ -127,7 +127,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="modalCenterTitle">Edit a user {{lang}} 1</h5>
+                            <h5 class="modal-title" id="modalCenterTitle">{{ __('Edit a user',this.lang)}}</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body" id="updateUser_easy">
@@ -136,10 +136,10 @@
                                     <div class="col-12 text-center mb-3">
                                         <label for="file-upload-communication-comments-update"
                                                class="btn text-muted text-center p-1 mb-0 mx-auto position-relative bg-image-border p-0 bg-sub shadow-sm">
-                                            <img id="selected-update-image" v-if="users_update.image == null" class="w-100 h-100 object-fit-cover" style="display:none;" src="" alt="">
+                                            <img id="selected-update-image" v-if="users_update.image === ''" class="w-100 h-100 object-fit-cover" style="display:none;" src="" alt="">
                                             <img id="selected-update-image" v-else class="w-100 h-100 object-fit-cover" :src="users_update.image" alt="">
                                         </label>
-                                        <small class="text-main d-block py-2 font-12 fw-light">Click to Add Your Profile Image</small>
+                                        <small class="text-main d-block py-2 font-12 fw-light">{{ __('Click to Add Your Profile Image',this.lang)}}</small>
 
                                         <input type="file" v-on:change="selectedFileEdit" class="input-file start-0 file-upload-communication-comments-create"
                                                id="file-upload-communication-comments-update"/>
@@ -150,13 +150,13 @@
                                 </div>
                                 <div class="row g-2">
                                     <div class="col mb-0">
-                                        <label class="form-label">Name</label>
+                                        <label class="form-label">{{ __('Name',this.lang)}}</label>
                                         <input type="text" v-model="users_update.name"
                                                class="form-control" placeholder="Your Name">
                                         <span v-if="flashMsg.name" class="text-danger font-12 fw-400">{{ flashMsg.name[0] }}</span>
                                     </div>
                                     <div class="col mb-0">
-                                        <label class="form-label">Number System</label>
+                                        <label class="form-label">{{ __('Number System',this.lang)}}</label>
                                         <input type="text" v-model="users_update.num_system"
                                                class="form-control" placeholder="Number">
                                         <span v-if="flashMsg.num_system" class="text-danger font-12 fw-400">{{ flashMsg.num_system[0] }}</span>
@@ -164,14 +164,14 @@
                                 </div>
                                 <div class="row g-2 mt-2">
                                     <div class="col mb-0">
-                                        <label class="form-label">Email</label>
+                                        <label class="form-label">{{ __('Email',this.lang)}}</label>
                                         <input type="email" v-model="users_update.email"
                                                class="form-control" placeholder="Email">
                                         <span v-if="flashMsg.email"
                                               class="text-danger font-12 fw-400">{{ flashMsg.email[0] }}</span>
                                     </div>
                                     <div class="col mb-0">
-                                        <label class="form-label">Phone</label>
+                                        <label class="form-label">{{ __('Phone',this.lang)}}</label>
                                         <input type="text" v-model="users_update.phone"
                                                class="form-control" placeholder="phone number">
                                         <span v-if="flashMsg.phone" class="text-danger font-12 fw-400">{{ flashMsg.phone[0] }}</span>
@@ -179,7 +179,7 @@
                                 </div>
                                 <div class="row g-2 mt-2">
                                     <div class="col mb-0">
-                                        <label class="form-label">Password</label>
+                                        <label class="form-label">{{ __('Password',this.lang)}}</label>
                                         <input type="password" v-model="users_update.password"
                                                class="form-control" placeholder="*********">
                                         <span v-if="flashMsg.password"
@@ -205,7 +205,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <h5 class="text-center mb-0">{{ __('Are you sure to delete this user ?',this.lang)}}</h5>
+                            <h5 class="text-center mb-0">{{ __('Are you sure to delete ?',this.lang)}}</h5>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" id="CloseDeleteUser" data-bs-dismiss="modal" >Close</button>
@@ -353,6 +353,7 @@ export default {
                 }
             })
                 .then((res) => {
+                    console.log(res.data)
                     this.users_update = res.data;
                     this.key_index = index;
                     this.loading_data = false;
@@ -366,11 +367,11 @@ export default {
         async UpdateUser() {
             this.loading_update = true;
             let formDataEdit = new FormData();
-            formDataEdit.append('image', this.image);
-            formDataEdit.append('email', this.users_update.email);
-            formDataEdit.append('name', this.users_update.name);
-            formDataEdit.append('num_system', this.users_update.num_system);
-            formDataEdit.append('phone', this.users_update.phone);
+            formDataEdit.append('image', this.image ? this.image : '');
+            formDataEdit.append('email', this.users_update.email ? this.users_update.email : '');
+            formDataEdit.append('name', this.users_update.name ? this.users_update.name : '');
+            formDataEdit.append('num_system', this.users_update.num_system ? this.users_update.num_system : '');
+            formDataEdit.append('phone', this.users_update.phone ? this.users_update.phone : '');
             formDataEdit.append('password', this.users_update.password ? this.users_update.password : '');
             const config = {
                 headers: {'content-type': 'multipart/form-data','Accept-Language': this.lang}
@@ -379,7 +380,7 @@ export default {
                 .then((res) => {
                     localStorage.setItem('name', res.data.name);
                     this.users[this.key_index] = res.data.data;
-                    this.users[this.key_index].id = res.data.id;
+                    // this.users[this.key_index].id = res.data.id;
                     this.key_index = null;
                     document.getElementById('CloseEditUser').click();
                     document.getElementById('updateUser_easy').style.opacity='0';
