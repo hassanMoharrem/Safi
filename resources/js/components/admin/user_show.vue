@@ -66,7 +66,6 @@
                     <td>{{ dessert.name }}</td>
                     <td><span class="badge bg-label-primary me-1">{{ dessert.phase }}</span></td>
                     <td>
-                        123
                         <a :href="stations_show+'/'+dessert.id" class="btn btn-primary ms-1 px-2">
                             <i class="fas fa-eye"></i>
                         </a>
