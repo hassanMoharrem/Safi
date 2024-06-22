@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Base\BaseController;
 use App\Models\DessertStation;
 use App\Models\UpdatePhase;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UpdatePhaseController extends BaseController
@@ -23,6 +24,11 @@ class UpdatePhaseController extends BaseController
         }
 
         $data = UpdatePhase::where('station_id', $station->id)->get();
+        $formattedData = $data->map(function($item) {
+            $item->last_date = Carbon::parse($item->last_date)->format('Y-m-d');
+            $item->next_date = Carbon::parse($item->next_date)->format('Y-m-d');
+            return $item;
+        });
 
         if ($data->isEmpty()) {
             return response()->json([
@@ -36,7 +42,7 @@ class UpdatePhaseController extends BaseController
             'status' => 200,
             'message' => $lang == 'ar' ? 'نجاح العملية' :'Success',
             'success' => true,
-            'data' => $data
+            'data' => $formattedData
         ]);
 
     }
